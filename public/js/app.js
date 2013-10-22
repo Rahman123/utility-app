@@ -1,4 +1,7 @@
 "use strict";
+
+$ = jQuery.noConflict();
+
 var angmodule = angular.module("UtilityApp",['loadingOnAJAX']);
 
 //loading image on

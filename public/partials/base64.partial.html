@@ -4,7 +4,7 @@
 	<form style="width: 50%" role="form">
 		<div class="form-group">
 			<label>Base64 encoded string</label>
-			<textarea ng-model="encoded" class="form-control" />
+			<textarea id="encodedTextarea" ng-model="encoded" class="form-control" />
 		</div>
 
 		<button type="button" class="btn btn-warning btn-block"  ng-click="decode()">Decode</button>
@@ -13,7 +13,7 @@
 
 		<div class="form-group">
 			<label>Non encoded string</label>
-			<textarea ng-model="plain" class="form-control"/>
+			<textarea id="plainTextarea" ng-model="plain" class="form-control"/>
 		</div>
 
 		<button type="button" class="btn btn-primary btn-block" ng-click="encode()">Encode</button>

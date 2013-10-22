@@ -51,6 +51,7 @@ angmodule.controller("Base64Ctrl",
             APIProxy.base64Encode($scope.plain, 
                 function(data) {
                     $scope.encoded = data.data;
+                    $('#encodedTextarea').focus();
                 }, 
                 function(err) {
                     $scope.errMsg = err;
@@ -64,6 +65,7 @@ angmodule.controller("Base64Ctrl",
             APIProxy.base64Decode($scope.encoded, 
                 function(data) {
                     $scope.plain = data.data;
+                    $('#plainTextarea').focus();
                 }, 
                 function(err) {
                     $scope.errMsg = err;
