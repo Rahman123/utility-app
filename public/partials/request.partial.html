@@ -2,12 +2,20 @@
 
 <table class="table">
 	<tr>
+		<td>History</td>
 		<td>Endpoint</td>
 		<td>
 			<input class="form-control" ng-model="url" placeholder="http://www.example.com"/>
 		</td>
 	</tr>
 	<tr>
+		<td rowspan="4">
+			<table class="table table-hover" style="width:150px">
+				<tr ng-repeat="h in sessionRequests|orderBy:'-timestamp'">
+					<td style="font-size:8pt; cursor:pointer;" ng-click="loadRequestFromSession(h)">{{h.timestamp|date:'medium'}}</td>
+				</tr>
+			</table>
+		</td>
 		<td>Method</td>
 		<td>
 			<select ng-model="method" class="form-control">
@@ -32,7 +40,7 @@
 					<!--
 						<input class="form-control" ng-model="h.key"/>
 					-->
-						<input type="text" ng-model="h.key" typeahead="key for key in headersList | filter:$viewValue | limitTo:10">
+						<input class="form-control" type="text" ng-model="h.key" typeahead="key for key in headersList | filter:$viewValue | limitTo:10">
 					</td>
 					<td><input class="form-control" ng-model="h.value"/></td>
 					<td><button class="btn btn-xs btn-danger" ng-click="removeHeader($index)">

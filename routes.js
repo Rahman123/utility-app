@@ -1,4 +1,5 @@
 var request = require('request');
+var MAX_SESSION_SIZE = 10;
 
 exports.base64Decode = function(req,res){
 	var body = req.body;
@@ -56,8 +57,21 @@ exports.requestCall = function(req,res){
 		headers  : headers,
 		body : req.body.body || null,  
 	};
-	console.log(options);
+	
 	request(options,function(error, response, body){
+
+		if(!req.session.requests)req.session.requests = [];
+		options.headers = req.body.headers;
+		var requestSession = {request: options,
+									timestamp: Date.now()
+							};
+		if(req.session.requests.length >= MAX_SESSION_SIZE){
+			req.session.requests.unshift(requestSession);
+			req.session.requests.pop();
+		}
+		else
+			req.session.requests.push(requestSession);
+
 		response = response || null;
 		body = body || null;
 		statusCode = (response)? response.statusCode : null;
@@ -69,7 +83,12 @@ exports.requestCall = function(req,res){
 		res.send({error: error, 
 					status : statusCode, 
 					headers : headers , 
-					body : body  || null
+					body : body  || null,
 				});
 	});
 };
+
+exports.getSessionRequests = function(req,res){
+	if(!req.session.requests)req.session.requests = [];
+	res.send(req.session.requests);
+}

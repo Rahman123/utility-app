@@ -65,6 +65,17 @@ angmodule.factory('APIProxy', ['$http', function ($http) {
 			  .error(function(err) {
 			  	callbackError(err);
 			  });
+		},
+
+		getStoredRequests : function(callbackSuccess, callbackError){
+			$http.get('/api/request/sessionList')
+			.success(function(data, status, headers, config) {
+			  	if(status !== 200) callbackError(data);
+				else callbackSuccess(data);
+			  })
+			  .error(function(err) {
+			  	callbackError(err);
+			  });
 		}
 
 		

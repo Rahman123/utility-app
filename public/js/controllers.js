@@ -135,9 +135,34 @@ angmodule.controller('RequestCtrl',
             APIProxy.requestCall($scope.url, $scope.method, $scope.headers, $scope.body, 
                 function(data){
                     $scope.response = data;
+                    $scope.getStoredRequests();
                 },
                 function(err) {
                     $scope.response.error ='Unexpected error: '+err;
                 });
         }
+
+        $scope.sessionRequests = [];
+        $scope.getStoredRequests = function(){
+            APIProxy.getStoredRequests(function(data){
+                $scope.sessionRequests = data;
+            },
+            function(err){
+                $scope.sessionRequests = [];
+            });
+        }
+
+        $scope.loadRequestFromSession = function(sessionRequest){
+            console.log(sessionRequest);
+            $scope.url = sessionRequest.request.uri;
+            $scope.body = sessionRequest.request.body;
+            $scope.method = sessionRequest.request.method;
+            $scope.headers = sessionRequest.request.headers || [];
+        }
+
+        function init(){
+            $scope.getStoredRequests();
+        }   
+        init();
+
 });

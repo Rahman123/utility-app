@@ -27,6 +27,8 @@ app.post('/api/base64/encode', routes.base64Encode);
 app.post('/api/base64/decode', routes.base64Decode);
 
 app.post('/api/request/call', routes.requestCall);
+app.get('/api/request/sessionList', routes.getSessionRequests);
+
 
 exports.server = app.listen(PORT, function() {
     console.log("Listening on " + PORT);
