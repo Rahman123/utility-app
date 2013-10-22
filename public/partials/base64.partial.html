@@ -1,0 +1,22 @@
+<h1>Base64 Conversion</h1>
+
+<center>
+	<form style="width: 50%" role="form">
+		<div class="form-group">
+			<label>Base64 encoded string</label>
+			<textarea ng-model="encoded" class="form-control" />
+		</div>
+
+		<button type="button" class="btn btn-warning btn-block"  ng-click="decode()">Decode</button>
+
+		<div class="alert alert-danger" ng-show="errMsg"><strong>Error</strong>: {{errMsg}}}</div>
+
+		<div class="form-group">
+			<label>Non encoded string</label>
+			<textarea ng-model="plain" class="form-control"/>
+		</div>
+
+		<button type="button" class="btn btn-primary btn-block" ng-click="encode()">Encode</button>
+
+	</form>
+</center>

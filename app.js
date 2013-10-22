@@ -1,4 +1,5 @@
 var express = require('express');
+var routes = require('./routes');
 var app = express();
 var PORT = process.env.PORT || 5000;
 
@@ -21,6 +22,9 @@ app.configure(function() {
 app.get('/',function(req,res){
     res.render('index',{});
 });
+
+app.post('/api/base64/encode', routes.base64Encode);
+app.post('/api/base64/decode', routes.base64Decode);
 
 
 exports.server = app.listen(PORT, function() {
