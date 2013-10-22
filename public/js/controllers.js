@@ -16,9 +16,16 @@ angmodule.controller("MenuCtrl",
     function($scope, $http, $filter, $location, AppUtils){
         console.log('MenuCtrl');
 
-        //checks for a given
-        $scope.isActiveTab   = function(tabNameURL){
-            return tabNameURL === $location.$$path;
+        $scope.isActiveTab   = function(tabNameURL) {
+            if(typeof tabNameURL === 'string') {
+                return tabNameURL === $location.$$path;
+            }
+            else {
+                for(v in tabNameURL) 
+                    if(tabNameURL[v] === $location.$$path) 
+                        return true;
+            }
+            return false;
         }
 
     }
@@ -74,3 +81,63 @@ angmodule.controller("Base64Ctrl",
         }
     }
 );
+
+angmodule.controller('UrlEncodeCtrl',
+    function($scope, $http, $filter, $location, AppUtils, APIProxy){
+        console.log('UrlEncodeCtrl');
+        $scope.errMsg = null;
+        $scope.$emit(AppUtils.Const.Events.LOCATION_CHANGE,{});
+
+        $scope.encode = function(){
+            $scope.errMsg = null;
+            if(!$scope.plain){
+                return $scope.errMsg = 'Invalid string.';
+            }
+            $scope.encoded = encodeURIComponent($scope.plain);
+            $('#encodedTextarea').focus();
+        }
+
+        $scope.decode = function(){
+            $scope.errMsg = null;
+            if(!$scope.encoded){
+                return $scope.errMsg = 'Invalid string.';
+            }
+            $scope.plain = decodeURIComponent($scope.encoded);
+            $('#plainTextarea').focus();
+        }
+});
+
+angmodule.controller('RequestCtrl',
+    function($scope, $http, $filter, $location, AppUtils, APIProxy){
+        console.log('RequestCtrl');
+        $scope.errMsg = null;
+        $scope.$emit(AppUtils.Const.Events.LOCATION_CHANGE,{});
+
+        $scope.headersList = AppUtils.Const.HEADERS_KEYS;
+        $scope.method = 'GET';
+        $scope.headers = [];
+
+        $scope.addHeader = function(){
+            $scope.headers.push({key:"",value:""});
+        }
+
+
+        $scope.removeHeader = function(index){
+            if((index!==0 && !index) || index < 0) return;
+            if(!$scope.headers) return;
+            if($scope.headers.length < index) return;
+            $scope.headers.splice(index,1);
+        }
+
+        $scope.response = {}; 
+        $scope.requestCall = function(){
+            $scope.request = {}; 
+            APIProxy.requestCall($scope.url, $scope.method, $scope.headers, $scope.body, 
+                function(data){
+                    $scope.response = data;
+                },
+                function(err) {
+                    $scope.response.error ='Unexpected error: '+err;
+                });
+        }
+});

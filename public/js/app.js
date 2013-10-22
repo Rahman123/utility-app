@@ -2,7 +2,7 @@
 
 $ = jQuery.noConflict();
 
-var angmodule = angular.module("UtilityApp",['loadingOnAJAX']);
+var angmodule = angular.module("UtilityApp",['ui.bootstrap','loadingOnAJAX']);
 
 //loading image on
 angular.module('loadingOnAJAX', [])
@@ -34,6 +34,14 @@ angmodule.config(['$routeProvider', function ($routeProvider) {
 		.when('/base64', {
 			templateUrl: '/public/partials/base64.partial.html',
 			controller: 'Base64Ctrl'
+		})
+		.when('/urlEncode', {
+			templateUrl: '/public/partials/urlencode.partial.html',
+			controller: 'UrlEncodeCtrl'
+		})
+		.when('/request', {
+			templateUrl: '/public/partials/request.partial.html',
+			controller: 'RequestCtrl'
 		})
 		/*
 		.when('/job/:id', {
