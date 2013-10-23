@@ -1,0 +1,15 @@
+<h1>Random json generator</h1>
+<center>
+	<h3>Copy a schema</h3>
+	<div style="width:60%">
+	<textarea ng-model="schema" style="width:100%" rows="15"></textarea>
+	<br/><br/>
+	<button class="btn btn-info btn-lg btn-block">Generate JSON ...</button>
+	<br/>
+	<div class="alert alert-danger" ng-show="errMsg"><strong>Error</strong>: {{errMsg}}}</div>
+	<br/>
+	<div ng-show="randomJson">
+		<h3>Random json produced</h3>
+		<pre>{{randomJson|json}}</pre>
+	</div>
+</div>

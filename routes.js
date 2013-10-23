@@ -2,6 +2,7 @@ var request = require('request');
 var randomString = require('random-string');
 var MAX_SESSION_SIZE = 10;
 
+//Base64 decode a string
 exports.base64Decode = function(req,res){
 	var body = req.body;
 	if(!req.body || !body || !body.data) {
@@ -19,6 +20,7 @@ exports.base64Decode = function(req,res){
 	
 }
 
+//Base64 encode a string
 exports.base64Encode = function(req,res){
 	var body = req.body;
 	if(!req.body || !body|| !body.data) {
@@ -36,7 +38,7 @@ exports.base64Encode = function(req,res){
 	
 }
 
-
+//make an HTTP request
 exports.requestCall = function(req,res){
 	if(!req.body){
 		res.statusCode = 400;
@@ -90,16 +92,19 @@ exports.requestCall = function(req,res){
 	});
 };
 
+//get all session stored http requests
 exports.getSessionRequests = function(req,res){
 	if(!req.session.requests)req.session.requests = [];
 	res.send(req.session.requests);
 }
 
+//reset session for http requests stored
 exports.resetSessionRequests = function(req,res){
 	req.session.requests = [];
 	res.send({});
 }
 
+//download a single http request from session 
 exports.downloadRequest = function(req,res){
 	if(!req.params || !req.params.id){
 		res.statusCode = 400;
@@ -119,10 +124,25 @@ exports.downloadRequest = function(req,res){
 	return res.end(JSON.stringify(content));
 }
 
+//download all http request sotred in session
 exports.downloadAllRequests = function(req,res){
 	if(!req.session || !req.session.requests) content = {error: 'No request found'};
 	else content = req.session.requests;
 	res.setHeader('content-type', 'application/json');
 	res.setHeader( "Content-Disposition", "attachment; filename=\"requests.json\"" );
 	return res.end(JSON.stringify(content));
+}
+
+//produces a random json (given a schema)
+exports.produceRandomJSON = function(req,res){
+	if(!req.body || ! req.body.schema || !req.params.schemaId){
+		res.statusCode = 400;
+		return res.send({code: '001', error: 'No schema body or schema id set'});
+	}
+	var schema = req.body.schema;
+	var produced = {};
+	for(v in schema){
+
+	}
+	res.send(produced);
 }

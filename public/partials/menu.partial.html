@@ -25,8 +25,11 @@
                 -->
               </ul>
             </li>
-            
-
+            <li class="dropdown" ng-class="{active:isActiveTab(['/randomJson'])}">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Random things <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li ng-class="{active:isActiveTab('/randomJson')}"><a href="#/randomJson">Random JSON</a></li>
+              </ul>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <!--

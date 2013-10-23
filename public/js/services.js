@@ -89,6 +89,16 @@ angmodule.factory('APIProxy', ['$http', function ($http) {
 			  });
 		},
 
+		produceRandomJson : function(schema, callbackSuccess, callbackError){
+			$http.post('/api/randomJson', schema)
+			.success(function(data, status, headers, config) {
+			  	if(status !== 200) callbackError(data);
+				else callbackSuccess(data);
+			  })
+			  .error(function(err) {
+			  	callbackError(err);
+			  });
+		},
 		
 	};
 }]);

@@ -43,6 +43,11 @@ angmodule.config(['$routeProvider', function ($routeProvider) {
 			templateUrl: '/public/partials/request.partial.html',
 			controller: 'RequestCtrl'
 		})
+		.when('/randomJson', {
+			templateUrl: '/public/partials/random-json.partial.html',
+			controller: 'RandomJSONCtrl'
+		})
+		
 		/*
 		.when('/job/:id', {
 			templateUrl: 'partials/job-detail.partial.html',

@@ -177,6 +177,23 @@ angmodule.controller('RequestCtrl',
 
 });
 
+
+angmodule.controller('RandomJSONCtrl',
+    function($scope, $http, $filter, $location, AppUtils, APIProxy){
+        $scope.errMsg = null;
+
+        $scope.produce = function(){
+            $scope.errMsg = null;
+            APIProxy.produceRandomJson($scope.schema, 
+                function(json){
+                    $scope.randomJson = json;
+                },
+                function(err){
+                    $scope.errMsg = err;
+                });
+        }
+});
+
 function handleError(msg){
     alert(msg);
 }

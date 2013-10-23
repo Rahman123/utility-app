@@ -33,6 +33,9 @@ app.get('/api/request/resetSessionList', routes.resetSessionRequests);
 app.get('/api/request/:id',routes.downloadRequest);
 app.get('/api/requests',routes.downloadAllRequests);
 
+app.post('/api/randomJson', routes.produceRandomJSON);
+app.get('/api/randomJson/:schemaId', routes.produceRandomJSON);
+
 exports.server = app.listen(PORT, function() {
     console.log("Listening on " + PORT);
 });
