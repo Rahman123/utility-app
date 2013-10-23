@@ -182,9 +182,20 @@ angmodule.controller('RandomJSONCtrl',
     function($scope, $http, $filter, $location, AppUtils, APIProxy){
         $scope.errMsg = null;
 
-        $scope.produce = function(){
+        $scope.produceJSON = function(schemaURL, schemaId){
             $scope.errMsg = null;
-            APIProxy.produceRandomJson($scope.schema, 
+            var schema = null;
+
+            if(!schemaURL && !schemaId){
+                try{
+                    schema = JSON.parse($scope.schema);
+                }catch(e){
+                    $scope.errMsg = 'Invalid JSON: '+e;
+                    return;
+                }
+            }
+
+            APIProxy.produceRandomJson(schema, schemaURL, schemaId,
                 function(json){
                     $scope.randomJson = json;
                 },

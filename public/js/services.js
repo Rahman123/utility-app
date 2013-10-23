@@ -89,8 +89,18 @@ angmodule.factory('APIProxy', ['$http', function ($http) {
 			  });
 		},
 
-		produceRandomJson : function(schema, callbackSuccess, callbackError){
-			$http.post('/api/randomJson', schema)
+		produceRandomJson : function(schema, schemaURL, schemaId, callbackSuccess, callbackError){
+			var url = '/api/randomJson';
+			schema = schema || null;
+			schemaURL = schemaURL || null;
+			schemaId = schemaId || null;
+			if(schemaURL){
+				url +='?schemaURL='+encodeURIComponent(schemaURL);
+			}
+			else if(schemaId){
+				url+='/'+schemaId;
+			}
+			$http.post(url, {schema : schema})
 			.success(function(data, status, headers, config) {
 			  	if(status !== 200) callbackError(data);
 				else callbackSuccess(data);

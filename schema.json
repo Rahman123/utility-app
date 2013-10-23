@@ -1,0 +1,30 @@
+{
+
+	"currency" : "CURRENCY",
+	"textarea" : "TEXTAREA",
+	"array3" : [ "EMAIL"],
+	"string":"STRING", 
+	"date":"DATE", 
+	"boolean":"BOOLEAN",
+	"integer" : "INTEGER",
+	"double" : "DOUBLE",
+	"url" : "URL",
+	"email" : "EMAIL",
+	"subnode" : {
+		"string":"STRING", 
+		"date":"DATE", 
+		"boolean":"BOOLEAN",
+		"integer" : "INTEGER",
+		"double" : "DOUBLE",
+		"url" : "URL",
+		"array1" : [
+			{"url": "URL"}
+		]
+	},
+	"array2" : [
+		{
+			"string" : "STRING",
+			"date" : "DATE"
+		}
+	]
+}

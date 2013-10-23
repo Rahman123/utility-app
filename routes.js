@@ -1,5 +1,6 @@
 var request = require('request');
 var randomString = require('random-string');
+var randomJson = require('./random-json');
 var MAX_SESSION_SIZE = 10;
 
 //Base64 decode a string
@@ -134,15 +135,61 @@ exports.downloadAllRequests = function(req,res){
 }
 
 //produces a random json (given a schema)
+var MAX_SCHEMA_SIZE = 3000;
 exports.produceRandomJSON = function(req,res){
-	if(!req.body || ! req.body.schema || !req.params.schemaId){
+	console.log(req.body);
+	if(!req.body || (!req.body.schema && !req.params.schemaId && !req.query.schemaURL)){
 		res.statusCode = 400;
 		return res.send({code: '001', error: 'No schema body or schema id set'});
 	}
-	var schema = req.body.schema;
-	var produced = {};
-	for(v in schema){
-
+	if(req.body && req.body.schema && JSON.stringify(req.body.schema).length > MAX_SCHEMA_SIZE){
+		res.statusCode = 400;
+		return res.send({code: '002', error: 'Schema too complicate. Max 3000 chars.'});
 	}
-	res.send(produced);
+
+	//get schema from request body
+	var schema = req.body.schema;
+	if(schema){
+		var produced = randomJson({schema: schema});
+		return res.send(produced);
+	}
+
+	//get stored schema
+	var schemaId = req.params.schemaId;
+	if(schemaId){
+		return res.send({});
+	}
+
+	//get schema from URL
+	var schemaURL = req.query.schemaURL;
+	if(schemaURL){
+		var options = {
+			method : 'GET',
+			uri : schemaURL || null,
+		};
+		
+		request(options,function(error, response, body){
+			if(error){
+				res.statusCode = 400;
+				return res.send({code: '003', error: 'Unexpected error: '+error});
+			}
+			if(response.statusCode !== 200){
+				return res.send({code: '004', error: 'Server responded : '+response.statusCode+' - '+body});
+			}
+			
+			if(body && body.length > MAX_SCHEMA_SIZE){
+				res.statusCode = 400;
+				return res.send({code: '002', error: 'Schema too complicate. Max 3000 chars.'});
+			}
+
+			try{
+				body = JSON.parse(body);
+			}catch(e){
+				res.statusCode = 400;
+				return res.send({code: '003', error: 'Unexpected error: '+e});
+			}
+			var produced = randomJson({schema: body});
+			return res.send(produced);
+		});
+	}
 }
