@@ -4,7 +4,8 @@
     "dependencies": {
         "express": "3.3.x",
         "ejs": "*",
-        "request":"2.27.x"
+        "request":"2.27.x",
+        "random-string":"0.1.x"
     },
     "engines": {
         "node": "0.10.x",

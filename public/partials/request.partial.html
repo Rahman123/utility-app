@@ -2,20 +2,28 @@
 
 <table class="table">
 	<tr>
-		<td>History</td>
-		<td>Endpoint</td>
+		<th rowspan="5" style="width:220px; text-align:center">
+			<div class="well well-small">
+				<label>Requests history</label>
+				<button class="btn btn-danger btn-xs" ng-click="resetSessionHistory()">Reset history</button>
+				<br/><br/>
+				<div ng-repeat="h in sessionRequests|orderBy:'-timestamp'" style="margin-top:5px">
+					<span class="no-selection history-request" ng-dblclick="loadRequestFromSession(h)"
+						title="URL: {{h.request.uri}} Method: {{h.request.method}}">{{h.timestamp|date:'medium'}}</span>
+					<a href="/api/request/{{h.id}}" title="Download this request" class="btn btn-primary btn-xs">
+						<span class="glyphicon glyphicon-cloud-download"></span>
+					</a>
+				</div>
+				<br/>
+				<a href="/api/requests" class="btn btn-primary btn-xs" ng-disabled="sessionRequests.length==0">Download all <span class="glyphicon glyphicon-cloud-download"></span></a>
+			</div>
+		</th>
+		<td style="width:220px">Endpoint</td>
 		<td>
 			<input class="form-control" ng-model="url" placeholder="http://www.example.com"/>
 		</td>
 	</tr>
 	<tr>
-		<td rowspan="4">
-			<table class="table table-hover" style="width:150px">
-				<tr ng-repeat="h in sessionRequests|orderBy:'-timestamp'">
-					<td style="font-size:8pt; cursor:pointer;" ng-click="loadRequestFromSession(h)">{{h.timestamp|date:'medium'}}</td>
-				</tr>
-			</table>
-		</td>
 		<td>Method</td>
 		<td>
 			<select ng-model="method" class="form-control">
@@ -23,23 +31,21 @@
 				<option value="POST">POST</option>
 				<option value="PUT">PUT</option>
 				<option value="DELETE">DELETE</option>
+				<option value="HEAD">HEAD</option>
 			</select>
 		</td>
 	</tr>
 	<tr>
 		<td>Headers
-			<br/>
-			<button class="btn btn-info btn-xs" type="url" ng-click="addHeader()">Add header...</button>
+			
+			<button class="btn btn-info btn-xs" type="url" ng-click="addHeader()">Add header <span class="glyphicon glyphicon-plus-sign"/></button>
 		</td>
 		<td>
 
 			<table class="table table-striped" width="100%">
-				<tr><th>Name</th><th>Value</th><td></td></tr>
+				<tr><th>Key</th><th>Value</th><td></td></tr>
 				<tr ng-repeat="h in headers">
 					<td>
-					<!--
-						<input class="form-control" ng-model="h.key"/>
-					-->
 						<input class="form-control" type="text" ng-model="h.key" typeahead="key for key in headersList | filter:$viewValue | limitTo:10">
 					</td>
 					<td><input class="form-control" ng-model="h.value"/></td>
@@ -62,7 +68,7 @@
 	<tr>
 		<td></td>
 		<td>
-			<button class="btn btn-danger btn-lg btn-block" ng-click="requestCall()">Call</button>
+			<button class="btn btn-danger btn-lg btn-block" ng-click="requestCall()">Call <span class="glyphicon glyphicon-phone-alt"/></button>
 		</td>
 </table>
 

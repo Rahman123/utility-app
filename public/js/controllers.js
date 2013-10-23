@@ -145,6 +145,7 @@ angmodule.controller('RequestCtrl',
         $scope.sessionRequests = [];
         $scope.getStoredRequests = function(){
             APIProxy.getStoredRequests(function(data){
+                console.log(data);
                 $scope.sessionRequests = data;
             },
             function(err){
@@ -153,11 +154,19 @@ angmodule.controller('RequestCtrl',
         }
 
         $scope.loadRequestFromSession = function(sessionRequest){
-            console.log(sessionRequest);
             $scope.url = sessionRequest.request.uri;
             $scope.body = sessionRequest.request.body;
             $scope.method = sessionRequest.request.method;
             $scope.headers = sessionRequest.request.headers || [];
+        }
+
+        $scope.resetSessionHistory = function(){
+            APIProxy.resetSessionRequests(function(data){
+                $scope.sessionRequests = [];
+            },
+            function(err){
+                handleError(err);
+            });
         }
 
         function init(){
@@ -166,3 +175,7 @@ angmodule.controller('RequestCtrl',
         init();
 
 });
+
+function handleError(msg){
+    alert(msg);
+}

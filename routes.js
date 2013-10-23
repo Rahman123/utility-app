@@ -1,4 +1,5 @@
 var request = require('request');
+var randomString = require('random-string');
 var MAX_SESSION_SIZE = 10;
 
 exports.base64Decode = function(req,res){
@@ -63,7 +64,8 @@ exports.requestCall = function(req,res){
 		if(!req.session.requests)req.session.requests = [];
 		options.headers = req.body.headers;
 		var requestSession = {request: options,
-									timestamp: Date.now()
+									timestamp: Date.now(),
+									id : randomString({length: 20})
 							};
 		if(req.session.requests.length >= MAX_SESSION_SIZE){
 			req.session.requests.unshift(requestSession);
@@ -91,4 +93,36 @@ exports.requestCall = function(req,res){
 exports.getSessionRequests = function(req,res){
 	if(!req.session.requests)req.session.requests = [];
 	res.send(req.session.requests);
+}
+
+exports.resetSessionRequests = function(req,res){
+	req.session.requests = [];
+	res.send({});
+}
+
+exports.downloadRequest = function(req,res){
+	if(!req.params || !req.params.id){
+		res.statusCode = 400;
+		return res.send({error: 'No request found.'});
+	}
+	if(!req.session || !req.session.requests) content = {error: 'No request found'};
+	else{
+		for(v in req.session.requests){
+			if(req.session.requests[v].id === req.params.id){
+				content = req.session.requests[v];
+				break;
+			}
+		}
+	}
+	res.setHeader('content-type', 'application/json');
+	res.setHeader( "Content-Disposition", "attachment; filename=\""+req.params.id+".json\"" );
+	return res.end(JSON.stringify(content));
+}
+
+exports.downloadAllRequests = function(req,res){
+	if(!req.session || !req.session.requests) content = {error: 'No request found'};
+	else content = req.session.requests;
+	res.setHeader('content-type', 'application/json');
+	res.setHeader( "Content-Disposition", "attachment; filename=\"requests.json\"" );
+	return res.end(JSON.stringify(content));
 }

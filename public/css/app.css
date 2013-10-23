@@ -2,3 +2,17 @@ body {
   padding-top: 20px;
   padding-bottom: 60px;
 }
+
+/* item is not "text selected" when clicked */
+.no-selection {
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+}
+
+/* history request item */
+.history-request{
+	font-size:8pt; 
+	cursor:pointer;
+}

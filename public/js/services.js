@@ -76,7 +76,18 @@ angmodule.factory('APIProxy', ['$http', function ($http) {
 			  .error(function(err) {
 			  	callbackError(err);
 			  });
-		}
+		},
+
+		resetSessionRequests : function(callbackSuccess, callbackError){
+			$http.get('/api/request/resetSessionList')
+			.success(function(data, status, headers, config) {
+			  	if(status !== 200) callbackError(data);
+				else callbackSuccess(data);
+			  })
+			  .error(function(err) {
+			  	callbackError(err);
+			  });
+		},
 
 		
 	};
