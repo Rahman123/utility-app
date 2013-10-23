@@ -2,7 +2,7 @@
 
 $ = jQuery.noConflict();
 
-var angmodule = angular.module("UtilityApp",['ui.bootstrap','loadingOnAJAX']);
+var angmodule = angular.module("UtilityApp",['ngSanitize','ui.bootstrap','loadingOnAJAX']);
 
 //loading image on
 angular.module('loadingOnAJAX', [])

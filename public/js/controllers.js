@@ -169,6 +169,7 @@ angmodule.controller('RequestCtrl',
             });
         }
 
+
         function init(){
             $scope.getStoredRequests();
         }   
