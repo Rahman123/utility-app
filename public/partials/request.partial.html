@@ -12,7 +12,7 @@
 
 		<td style="width:220px">Endpoint</td>
 		<td>
-			<input class="form-control" ng-model="url" placeholder="http://www.example.com" ng-enter="requestCall()"/>
+			<input id="_endpointTxt" class="form-control" ng-model="url" placeholder="http://www.example.com" ng-enter="requestCall()"/>
 		</td>
 	</tr>
 	<tr>
@@ -23,7 +23,10 @@
 				<option value="POST">POST</option>
 				<option value="PUT">PUT</option>
 				<option value="DELETE">DELETE</option>
+				<option value="OPTIONS">OPTIONS</option>
 				<option value="HEAD">HEAD</option>
+				<option value="TRACE">TRACE</option>
+				<option value="CONNECT">CONNECT</option>
 			</select>
 		</td>
 	</tr>
@@ -69,23 +72,37 @@
 </table>
 
 <h3>Response</h3>
-<h4>Error</h4>
-<pre>{{response.error}}</pre>
-<h4>Status Code</h4>
-<pre>{{response.status}}</pre>
+<table width="100%">
+	<tr>
+		<td width="20%">
+			<h4>Status Code</h4>
+			<pre>{{response.status}}</pre>
+		</td>
+		<td width="5%"></td>
+		<td>
+			<h4>Status message</h4>
+			<pre>{{response.error}}</pre>
+		</td>
+	</tr>
+</table>
 <h4>
-Headers
-	<span ng-hide="showHeader" ng-click="showHTMLBody=false; showBody=false; showHeader=true" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-close"></span></span>
-	<span ng-show="showHeader" ng-click="showHeader=false" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-open"></span></span>
-|
-Raw Body
-<span ng-hide="showBody" ng-click="showHTMLBody=false; showBody=true; showHeader=false" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-close"></span></span>
-<span ng-show="showBody" ng-click="showBody=false" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-open"></span></span>
-|
-Body (HTML)
-	<span ng-hide="showHTMLBody" ng-click="showHTMLBody=true; showBody=false; showHeader=false" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-close"></span></span>
-	<span ng-show="showHTMLBody" ng-click="showHTMLBody=false" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-open"></span></span>
-
+	<a class="btn btn-lg" ng-class="{'btn-info':!showHeader, 'btn-default':showHeader}" ng-click="showHTMLBody=false; showBody=false; showHeader=!showHeader">
+		Headers 
+		<span ng-hide="showHeader"  > <span class="glyphicon glyphicon-folder-close"></span></span>
+		<span ng-show="showHeader"  > <span class="glyphicon glyphicon-folder-open"></span></span>
+	</a>
+	 
+	<a class="btn btn-lg" ng-class="{'btn-info':!showBody, 'btn-default':showBody}" ng-click="showHTMLBody=false; showBody=!showBody; showHeader=false">
+		Raw Body
+		<span ng-hide="showBody" > <span class="glyphicon glyphicon-folder-close"></span></span>
+		<span ng-show="showBody" > <span class="glyphicon glyphicon-folder-open"></span></span>
+	</a>
+	 
+	<span class="btn btn-lg" ng-class="{'btn-info':!showHTMLBody, 'btn-default':showHTMLBody}" ng-click="showHTMLBody=!showHTMLBody; showBody=false; showHeader=false">
+		Body (HTML)
+		<span ng-hide="showHTMLBody" > <span class="glyphicon glyphicon-folder-close"></span></span>
+		<span ng-show="showHTMLBody" > <span class="glyphicon glyphicon-folder-open"></span></span>
+	</span>
 </h4>
 <pre style="height:400px; overflow: auto;" ng-show="showHeader && response.headers">{{response.headers | json}}</pre>
 <pre style="height:400px; overflow: auto;" ng-show="showBody && response.body">{{response.body | json}}</pre>

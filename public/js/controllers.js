@@ -135,7 +135,10 @@ angmodule.controller('RequestCtrl',
             APIProxy.requestCall($scope.url, $scope.method, $scope.headers, $scope.body, 
                 function(data){
                     $scope.response = data;
-                    $scope.getStoredRequests();
+                    $scope.response.error = 'Request completed';
+                    $scope.showHTMLBody=false; 
+                    $scope.showBody=false; 
+                    $scope.showHeader=true;
                 },
                 function(err) {
                     $scope.response.error ='Unexpected error: '+err;
@@ -193,6 +196,7 @@ angmodule.controller('RequestCtrl',
 
         function init(){
             $scope.getStoredRequests();
+            setTimeout(function(){$('#_endpointTxt').focus();},100);
         }   
         init();
 
