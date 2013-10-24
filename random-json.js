@@ -41,13 +41,12 @@ function _recursiveSchema(field,schema){
 			return randomDate(new Date(2000, 0, 1), new Date())
 		}
 		if(node === TYPES.STRING){
-			return randomString({length: randomInteger(25), special: true});
+			return randomString({length: randomInteger(30,5), special: true});
 		}
 		if(node.indexOf(TYPES.INTEGER)===0){
 			var opt = node.split(':');
 			var max = (opt.length > 1)?opt[1]:null;
 			var min = (opt.length > 2)?opt[2]:null;
-			console.log(max+' '+min);
 			return randomInteger(max,min);
 		}
 		if(node.indexOf(TYPES.DOUBLE)===0){
@@ -60,8 +59,10 @@ function _recursiveSchema(field,schema){
 		if(node === TYPES.BOOLEAN){
 			return randomBoolean();
 		}
-		if(node === TYPES.URL){
-			return randomURL();
+		if(node.indexOf(TYPES.URL)===0){
+			var opt = node.split(':');
+			var protocol = (opt.length > 1)?opt[1]:null;
+			return randomURL(protocol);
 		}
 		if(node === TYPES.EMAIL){
 			return randomEmail();
@@ -70,7 +71,7 @@ function _recursiveSchema(field,schema){
 			return randomCurrency();
 		}
 		if(node === TYPES.TEXTAREA){
-			return randomString({length: randomInteger(2500), special: true});
+			return randomString({length: randomInteger(2500,100), special: true});
 		}
 		
 	}
@@ -106,7 +107,7 @@ function randomInteger(max,min){
 
 function randomDouble(precision,max,min){
 	if(max === null || typeof max === 'undefined' || max.toString().trim().length === 0) max = MAX_VALUE;
-	if(min === null || typeof max === 'undefined' || min.toString().trim().length === 0) min = -1 * MAX_VALUE;
+	if(min === null || typeof min === 'undefined' || min.toString().trim().length === 0) min = 0;
 	max = parseFloat(max);
 	min = parseFloat(min);
 	if(max < min){
@@ -126,24 +127,27 @@ function randomBoolean(){
 	return Math.random() > 0.5;
 }
 
-function randomURL(){
+function randomURL(protocol){
 	var url = '';
-	if(Math.random() > 0.5)	url+= 'http://';
-	else url+= 'https://';
-
+	if(!protocol){
+		if(Math.random() > 0.5)	url+= 'http://';
+		else url+= 'https://';
+	}
+	else
+		url += protocol+'://';
 	if(Math.random() > 0.2) url += 'www';
 	else url += randomString({length: 5, numbers:false});
 
 	url += '.';
 
-	url += randomString({length: randomInteger(15)});
+	url += randomString({length: randomInteger(15,3)});
 
 	url += '.';
 
-	url += randomString({length: 1, numbers: false}) + randomString({length: randomInteger(3),numbers: false});
+	url += randomString({length: 1, numbers: false}) + randomString({length: randomInteger(3,1),numbers: false});
 
 	if(Math.random() > 0.5){
-		url += '/'+randomString({length: randomInteger(10)})+'.html';
+		url += '/'+randomString({length: randomInteger(10,3)})+'.'+randomString({length:3});
 	}
 
 	return url.toLowerCase();
@@ -152,12 +156,12 @@ function randomURL(){
 
 function randomEmail(){
 	var email = '';
-	email += randomString({length:randomInteger(7),numbers: false})
+	email += randomString({length:randomInteger(7,1),numbers: false})
 			+ randomInteger(2)
 			+ ((Math.random()>0.5)?'.':'_')
-			+ randomString({length:randomInteger(10),numbers: false})
+			+ randomString({length:randomInteger(10,1),numbers: false})
 			+'@'
-			+ randomString({length: 1, numbers: false})+randomString({length:randomInteger(5),numbers: false})
+			+ randomString({length: 1, numbers: false})+randomString({length:randomInteger(5,2),numbers: false})
 			+'.'
 			+randomString({length: 2,numbers: false});
 	return email.toLowerCase();
