@@ -67,6 +67,39 @@ angmodule.factory('APIProxy', ['$http', function ($http) {
 			  });
 		},
 
+		saveRequest : function(url,method, headers, body, callbackSuccess, callbackError){
+
+			var config = {
+				url : url || null,
+				method : method || null,
+				headers : headers || [],
+				body : body || null,
+			}
+
+			$http.post('/api/request/save',config)
+			.success(function(data, status, headers, config) {
+			  	if(status !== 200) callbackError(data);
+				else callbackSuccess(data);
+			  })
+			  .error(function(err) {
+			  	callbackError(err);
+			  });
+		},
+
+		removeRequest : function(id, callbackSuccess, callbackError){
+			id = id || id;
+			$http.delete('/api/request/'+id)
+			.success(function(data, status, headers, config) {
+			  	if(status !== 200) callbackError(data);
+				else callbackSuccess(data);
+			  })
+			  .error(function(err) {
+			  	callbackError(err);
+			  });
+		},
+
+		
+
 		getStoredRequests : function(callbackSuccess, callbackError){
 			$http.get('/api/request/sessionList')
 			.success(function(data, status, headers, config) {

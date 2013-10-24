@@ -169,6 +169,27 @@ angmodule.controller('RequestCtrl',
             });
         }
 
+        $scope.saveRequest = function(){
+            $scope.request = {}; 
+            APIProxy.saveRequest($scope.url, $scope.method, $scope.headers, $scope.body, 
+                function(data){
+                    $scope.response = data;
+                    $scope.getStoredRequests();
+                },
+                function(err) {
+                    handleError(err);
+                });
+        }
+
+        $scope.removeRequest = function(id){
+            APIProxy.removeRequest(id, 
+                function(data){
+                    $scope.getStoredRequests();
+                },
+                function(err) {
+                    handleError(err);
+                });
+        }
 
         function init(){
             $scope.getStoredRequests();
@@ -179,7 +200,7 @@ angmodule.controller('RequestCtrl',
 
 
 angmodule.controller('RandomJSONCtrl',
-    function($scope, $http, $filter, $location, AppUtils, APIProxy){
+    function($scope, $http, $filter, $location,$anchorScroll, AppUtils, APIProxy){
         $scope.errMsg = null;
 
         $scope.produceJSON = function(schemaURL, schemaId){
@@ -198,6 +219,8 @@ angmodule.controller('RandomJSONCtrl',
             APIProxy.produceRandomJson(schema, schemaURL, schemaId,
                 function(json){
                     $scope.randomJson = json;
+                    $location.hash('_random');
+                    $anchorScroll();
                 },
                 function(err){
                     $scope.errMsg = err;

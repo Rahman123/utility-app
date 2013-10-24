@@ -63,7 +63,7 @@ exports.requestCall = function(req,res){
 	};
 	
 	request(options,function(error, response, body){
-
+		/*
 		if(!req.session.requests)req.session.requests = [];
 		options.headers = req.body.headers;
 		var requestSession = {request: options,
@@ -76,7 +76,7 @@ exports.requestCall = function(req,res){
 		}
 		else
 			req.session.requests.push(requestSession);
-
+		*/
 		response = response || null;
 		body = body || null;
 		statusCode = (response)? response.statusCode : null;
@@ -91,6 +91,53 @@ exports.requestCall = function(req,res){
 					body : body  || null,
 				});
 	});
+};
+
+//make an HTTP request
+exports.requestSave = function(req,res){
+	if(!req.body){
+		res.statusCode = 400;
+		return res.send('No body on request. Missing all parameters.');
+	}
+
+	var options = {
+		method : req.body.method || null,
+		uri : req.body.url || null,
+		headers  : req.body.headers,
+		body : req.body.body || null,  
+	};
+	
+		if(!req.session.requests)req.session.requests = [];
+
+		var requestSession = {request: options,
+									timestamp: Date.now(),
+									id : randomString({length: 20})
+							};
+		if(req.session.requests.length >= MAX_SESSION_SIZE){
+			req.session.requests.unshift(requestSession);
+			req.session.requests.pop();
+		}
+		else
+			req.session.requests.push(requestSession);
+
+		res.send(requestSession);
+};
+
+//make an HTTP request
+exports.requestRemove = function(req,res){
+	if(!req.params.id){
+		res.statusCode = 400;
+		return res.send('No request id sent.');
+	}
+
+	if(!req.session.requests) return res.send({});
+	for(var i in req.session.requests){
+		if(req.session.requests[i].id === req.params.id){
+			req.session.requests.splice(i,1);
+			break;
+		}
+	}
+	res.send({});
 };
 
 //get all session stored http requests

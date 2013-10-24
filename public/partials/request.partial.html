@@ -2,25 +2,17 @@
 
 <table class="table">
 	<tr>
-		<th rowspan="5" style="width:220px; text-align:center">
-			<div class="well well-small">
-				<label>Requests history</label>
-				<button class="btn btn-danger btn-xs" ng-click="resetSessionHistory()">Reset history</button>
-				<br/><br/>
-				<div ng-repeat="h in sessionRequests|orderBy:'-timestamp'" style="margin-top:5px">
-					<span class="no-selection history-request" ng-dblclick="loadRequestFromSession(h)"
-						title="URL: {{h.request.uri}} Method: {{h.request.method}}">{{h.timestamp|date:'medium'}}</span>
-					<a href="/api/request/{{h.id}}" title="Download this request" class="btn btn-primary btn-xs">
-						<span class="glyphicon glyphicon-cloud-download"></span>
-					</a>
-				</div>
-				<br/>
-				<a href="/api/requests" class="btn btn-primary btn-xs" ng-disabled="sessionRequests.length==0">Download all <span class="glyphicon glyphicon-cloud-download"></span></a>
-			</div>
-		</th>
+		<td rowspan="5" style="width:100px">
+			<a data-toggle="modal" href="#historyModal" class="btn btn-primary ">
+				Load request <span class="glyphicon glyphicon-floppy-open"></span>
+			</a>
+			<br/><br/>
+			<button class="btn btn-success btn-block" ng-click="saveRequest()" title="Only 10 slots per session" ng-disabled="!url">Save request <span class="glyphicon glyphicon-floppy-save"/></button>
+		</td>
+
 		<td style="width:220px">Endpoint</td>
 		<td>
-			<input class="form-control" ng-model="url" placeholder="http://www.example.com"/>
+			<input class="form-control" ng-model="url" placeholder="http://www.example.com" ng-enter="requestCall()"/>
 		</td>
 	</tr>
 	<tr>
@@ -37,8 +29,6 @@
 	</tr>
 	<tr>
 		<td>Headers
-			
-			<button class="btn btn-info btn-xs" type="url" ng-click="addHeader()">Add header <span class="glyphicon glyphicon-plus-sign"/></button>
 		</td>
 		<td>
 
@@ -49,12 +39,16 @@
 						<input class="form-control" type="text" ng-model="h.key" typeahead="key for key in headersList | filter:$viewValue | limitTo:10">
 					</td>
 					<td><input class="form-control" ng-model="h.value"/></td>
-					<td><button class="btn btn-xs btn-danger" ng-click="removeHeader($index)">
+					<td><button class="btn btn-danger" ng-click="removeHeader($index)">
 						<span class="glyphicon glyphicon-remove"></span>
 						</button>
 					</td>
 				</tr>
-				
+				<tfoot>
+				<tr><td colspan="3">
+					<button class="btn btn-info" type="url" ng-click="addHeader()"><span class="glyphicon glyphicon-plus"/></button>
+				</td></tr>
+				</tfoot>
 			</table>
 
 		</td>
@@ -66,9 +60,11 @@
 		</td>
 	</tr>
 	<tr>
-		<td></td>
 		<td>
-			<button class="btn btn-danger btn-lg btn-block" ng-click="requestCall()">Call <span class="glyphicon glyphicon-phone-alt"/></button>
+			
+		</td>
+		<td>
+			<button class="btn btn-danger btn-lg btn-block" ng-click="requestCall()" ng-disabled="!url">Send <span class="glyphicon glyphicon-envelope"/></button>
 		</td>
 </table>
 
@@ -77,16 +73,92 @@
 <pre>{{response.error}}</pre>
 <h4>Status Code</h4>
 <pre>{{response.status}}</pre>
-<h4>Headers
-	<span ng-hide="showHeader" ng-click="showHeader=true" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-close"></span></span>
-	<span ng-show="showHeader" ng-click="showHeader=false" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-open"></span>
-</h4>
-<pre ng-hide="showHeader"></pre>
-<pre ng-show="showHeader">{{response.headers | json}}</pre>
+<h4>
+Headers
+	<span ng-hide="showHeader" ng-click="showHTMLBody=false; showBody=false; showHeader=true" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-close"></span></span>
+	<span ng-show="showHeader" ng-click="showHeader=false" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-open"></span></span>
+|
+Raw Body
+<span ng-hide="showBody" ng-click="showHTMLBody=false; showBody=true; showHeader=false" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-close"></span></span>
+<span ng-show="showBody" ng-click="showBody=false" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-open"></span></span>
+|
+Body (HTML)
+	<span ng-hide="showHTMLBody" ng-click="showHTMLBody=true; showBody=false; showHeader=false" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-close"></span></span>
+	<span ng-show="showHTMLBody" ng-click="showHTMLBody=false" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-open"></span></span>
 
-<h4>Body
-<span ng-hide="showBody" ng-click="showBody=true" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-close"></span></span>
-<span ng-show="showBody" ng-click="showBody=false" style="cursor:pointer; font-weight:bold;"> <span class="glyphicon glyphicon-folder-open"></span>
 </h4>
-<pre ng-hide="showBody"></pre>
-<pre ng-show="showBody">{{response.body | json}}</pre>
+<pre style="height:400px; overflow: auto;" ng-show="showHeader && response.headers">{{response.headers | json}}</pre>
+<pre style="height:400px; overflow: auto;" ng-show="showBody && response.body">{{response.body | json}}</pre>
+<div style="height:400px;" ng-show="showHTMLBody && response.body">
+	<data-ng-iframe ng-model="response.body"/>
+</div>
+
+<pre style="height:400px; overflow: auto;" ng-show="showHeader && !response.headers">No data</pre>
+<pre style="height:400px; overflow: auto;" ng-show="showBody && !response.body">No data</pre>
+<pre style="height:400px;" ng-show="showHTMLBody && !response.body">No data</pre>
+
+
+<!-- HISTORY MODAL -->
+
+<div class="modal fade in"  id="historyModal" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close"  data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Session's Request History</h4>
+      </div>
+      <div class="modal-body">
+        	<table class"table table-striped" style="width:100%">	
+        		<thead>
+	        		<tr>
+	        			<td colspan="4" style="text-align:right">
+							<button class="btn btn-danger btn-xs" ng-disabled="sessionRequests.length==0"
+								ng-click="resetSessionHistory()">Reset history
+								<span class="glyphicon glyphicon-remove"/>
+							</button>
+							<br/><br/>
+						</td>
+					</tr>
+				</thead>
+				<tr ng-show="!sessionRequests.length">
+					<td colspan="4">
+						<p class="text-muted" style="text-align:center">No request in session</p>
+					</td>
+				</tr>
+				<tr ng-repeat="h in sessionRequests|orderBy:'-timestamp'">
+					<td>
+						<span class="no-selection history-request" data-dismiss="modal" ng-click="loadRequestFromSession(h)"><b>{{h.request.method}}</b>: <u>{{h.request.uri}}</u></span>
+					</td>
+					<td class="no-selection history-request">
+						{{h.timestamp|date:'M/d/yy h:mm:ss a'}}
+					</td>
+					<td>
+						<a href="/api/request/{{h.id}}" title="Download this request" class="btn btn-primary btn-xs">
+							<span class="glyphicon glyphicon-cloud-download"></span>
+						</a>
+					</td>
+					<td>
+						<a ng-click="removeRequest(h.id)" title="Remove this request from session" class="btn btn-danger btn-xs">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+					</td>
+				</tr>
+				<tfoot>
+					<tr>
+						<td colspan="4" style="text-align:right">
+							<br/>
+							<a href="/api/requests" class="btn btn-primary btn-xs" ng-disabled="sessionRequests.length==0">Download all <span class="glyphicon glyphicon-cloud-download"></span></a>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY MODAL -->
