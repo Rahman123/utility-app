@@ -1,14 +1,13 @@
 {
-
+	"integer" : "INTEGER:MAX:MIN",
+	"double" : "DOUBLE:PRECISION:MAX:MIN",
+	"url" : "URL:PROTOCOL",
 	"currency" : "CURRENCY",
 	"textarea" : "TEXTAREA",
 	"array3" : [ "EMAIL"],
 	"string":"STRING", 
 	"date":"DATE", 
 	"boolean":"BOOLEAN",
-	"integer" : "INTEGER:MAX:MIN",
-	"double" : "DOUBLE:PRECISION:MAX:MIN",
-	"url" : "URL:PROTOCOL",
 	"email" : "EMAIL",
 	"subnode" : {
 		"string":"STRING", 
