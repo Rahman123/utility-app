@@ -93,16 +93,19 @@
 	</a>
 	 
 	<a class="btn btn-lg" ng-class="{'btn-info':!showBody, 'btn-default':showBody}" ng-click="showHTMLBody=false; showBody=!showBody; showHeader=false">
-		Raw Body
+		Body (Raw)
 		<span ng-hide="showBody" > <span class="glyphicon glyphicon-folder-close"></span></span>
 		<span ng-show="showBody" > <span class="glyphicon glyphicon-folder-open"></span></span>
 	</a>
-	 
+	
+
 	<span class="btn btn-lg" ng-class="{'btn-info':!showHTMLBody, 'btn-default':showHTMLBody}" ng-click="showHTMLBody=!showHTMLBody; showBody=false; showHeader=false">
 		Body (HTML)
 		<span ng-hide="showHTMLBody" > <span class="glyphicon glyphicon-folder-close"></span></span>
 		<span ng-show="showHTMLBody" > <span class="glyphicon glyphicon-folder-open"></span></span>
 	</span>
+
+
 </h4>
 <pre style="height:400px; overflow: auto;" ng-show="showHeader && response.headers">{{response.headers | json}}</pre>
 <pre style="height:400px; overflow: auto;" ng-show="showBody && response.body">{{response.body | json}}</pre>

@@ -17,3 +17,20 @@ body {
 	cursor:pointer;
 }
 
+/* JSON tree */
+.json-tree-container{
+	font-family: monospace;
+}
+.json-tree-toggle{
+	cursor: pointer;
+	font-weight: bold;
+	color:green;
+}
+.json-tree-ul{
+	list-style: none;
+}
+.json-tree-field-name{
+	font-weight: bold;
+}
+
+
