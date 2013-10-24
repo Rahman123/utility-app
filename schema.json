@@ -4,6 +4,7 @@
 	"url" : "URL:PROTOCOL",
 	"currency" : "CURRENCY",
 	"textarea" : "TEXTAREA",
+	"textarea_words" : "TEXTAREA:true",
 	"array3" : [ "EMAIL"],
 	"string":"STRING", 
 	"date":"DATE", 

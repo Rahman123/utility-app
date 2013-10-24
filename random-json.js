@@ -70,8 +70,11 @@ function _recursiveSchema(field,schema){
 		if(node === TYPES.CURRENCY){
 			return randomCurrency();
 		}
-		if(node === TYPES.TEXTAREA){
-			return randomString({length: randomInteger(2500,100), special: true});
+		if(node.indexOf(TYPES.TEXTAREA)===0){
+			var opt = node.split(':');
+			var wordsStyle = (opt.length > 1)?opt[1]:null;
+			if(!wordsStyle)return randomString({length: randomInteger(2500,100), special: true});
+			else return randomWordsString();
 		}
 		
 	}
@@ -136,7 +139,7 @@ function randomURL(protocol){
 	else
 		url += protocol+'://';
 	if(Math.random() > 0.2) url += 'www';
-	else url += randomString({length: 5, numbers:false});
+	else url += randomString({length: 5, numeric:false});
 
 	url += '.';
 
@@ -144,7 +147,7 @@ function randomURL(protocol){
 
 	url += '.';
 
-	url += randomString({length: 1, numbers: false}) + randomString({length: randomInteger(3,1),numbers: false});
+	url += randomString({length: 1, numeric: false}) + randomString({length: randomInteger(3,1),numeric: false});
 
 	if(Math.random() > 0.5){
 		url += '/'+randomString({length: randomInteger(10,3)})+'.'+randomString({length:3});
@@ -156,14 +159,14 @@ function randomURL(protocol){
 
 function randomEmail(){
 	var email = '';
-	email += randomString({length:randomInteger(7,1),numbers: false})
+	email += randomString({length:randomInteger(7,1),numeric: false})
 			+ randomInteger(2)
 			+ ((Math.random()>0.5)?'.':'_')
-			+ randomString({length:randomInteger(10,1),numbers: false})
+			+ randomString({length:randomInteger(10,1),numeric: false})
 			+'@'
-			+ randomString({length: 1, numbers: false})+randomString({length:randomInteger(5,2),numbers: false})
+			+ randomString({length: 1, numeric: false})+randomString({length:randomInteger(5,2),numeric: false})
 			+'.'
-			+randomString({length: 2,numbers: false});
+			+randomString({length: 2,numeric: false});
 	return email.toLowerCase();
 }
 
@@ -198,3 +201,13 @@ function formatMoney (n, decimals, decimal_sep, thousands_sep)
    return sign + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : ''); 
 }
 
+/*
+	Random "words"
+*/
+function randomWordsString(){
+	var str = '';
+	for(var i = 0; i < randomInteger(2000,100); i++){
+		str+=' '+randomString({length: randomInteger(10,2), numeric: false});
+	}
+	return str.toLowerCase();
+}
