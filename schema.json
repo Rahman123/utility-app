@@ -6,8 +6,8 @@
 	"string":"STRING", 
 	"date":"DATE", 
 	"boolean":"BOOLEAN",
-	"integer" : "INTEGER",
-	"double" : "DOUBLE",
+	"integer" : "INTEGER:MAX:MIN",
+	"double" : "DOUBLE:PRECISION:MAX:MIN",
 	"url" : "URL",
 	"email" : "EMAIL",
 	"subnode" : {

@@ -14,6 +14,7 @@ var TYPES = {
 };
 
 var MAX_ARRAY_SIZE = 50;
+var MAX_VALUE = 100000;
 var CURRENCY_SYMBOLS = ['€','$','£'];
 
 module.exports = function randomJson(options){
@@ -42,11 +43,19 @@ function _recursiveSchema(field,schema){
 		if(node === TYPES.STRING){
 			return randomString({length: randomInteger(25), special: true});
 		}
-		if(node === TYPES.INTEGER){
-			return randomInteger();
+		if(node.indexOf(TYPES.INTEGER)===0){
+			var opt = node.split(':');
+			var max = (opt.length > 1)?opt[1]:null;
+			var min = (opt.length > 2)?opt[2]:null;
+			console.log(max+' '+min);
+			return randomInteger(max,min);
 		}
-		if(node === TYPES.DOUBLE){
-			return randomDouble();
+		if(node.indexOf(TYPES.DOUBLE)===0){
+			var opt = node.split(':');
+			var precision = (opt.length > 1)?opt[1]:null;
+			var max = (opt.length > 2)?opt[2]:null;
+			var min = (opt.length > 3)?opt[3]:null;
+			return randomDouble(precision,max,min);
 		}
 		if(node === TYPES.BOOLEAN){
 			return randomBoolean();
@@ -79,13 +88,6 @@ function _recursiveSchema(field,schema){
 				var maxChild = randomInteger(MAX_ARRAY_SIZE);
 				for(var x = 0; x < maxChild; x++){
 					subnode.push(_recursiveSchema(null,node[i]));
-					/*
-					var obj = {};
-					subnode.push(obj);
-					for(var v in node[i]){
-						obj[v] = _recursiveSchema(v,node[i]);
-					}
-					*/
 				}
 			}
 			return subnode;
@@ -98,14 +100,26 @@ function randomDate(start, end) {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
 }
 
-function randomInteger(max){
-	max = max || 1000;
-	return parseInt(Math.random()*max);
+function randomInteger(max,min){
+	return parseInt(randomDouble(0,max,min));
 }
 
-function randomDouble(max){
-	max = max || 1000;
-	return Math.random()*max;
+function randomDouble(precision,max,min){
+	if(max === null || typeof max === 'undefined' || max.toString().trim().length === 0) max = MAX_VALUE;
+	if(min === null || typeof max === 'undefined' || min.toString().trim().length === 0) min = -1 * MAX_VALUE;
+	max = parseFloat(max);
+	min = parseFloat(min);
+	if(max < min){
+		var tmp = min;
+		min = max;
+		max = tmp;
+	}
+
+	precision = parseInt(precision);
+	var result = (min + Math.random()*Math.abs(max-min));
+	if(!(precision >=0)) precision = randomInteger(11,0);
+	if(precision >= 0) return result.toFixed(precision);
+	return result;
 }
 
 function randomBoolean(){
@@ -152,7 +166,7 @@ function randomEmail(){
 function randomCurrency(){
 	var symbol = randomInteger(3);
 	if(symbol===3) symbol = 2;
-	return CURRENCY_SYMBOLS[symbol] +' '+formatMoney(randomDouble(150000),2,'.',',');
+	return CURRENCY_SYMBOLS[symbol] +' '+formatMoney(randomDouble(2,150000,0),2,'.',',');
 }
 
 /* 
