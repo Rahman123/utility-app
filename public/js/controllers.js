@@ -134,6 +134,7 @@ angmodule.controller('RequestCtrl',
             $scope.request = {}; 
             APIProxy.requestCall($scope.url, $scope.method, $scope.headers, $scope.body, 
                 function(data){
+                    console.log(data);
                     $scope.response = data;
                     $scope.response.error = 'Request completed';
                     $scope.showHTMLBody=false; 
@@ -141,7 +142,8 @@ angmodule.controller('RequestCtrl',
                     $scope.showHeader=true;
                 },
                 function(err) {
-                    $scope.response.error ='Unexpected error: '+err;
+                    $scope.response = err;
+                    //$scope.response.error ='Unexpected error: '+err;
                 });
         }
 

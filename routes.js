@@ -85,6 +85,7 @@ exports.requestCall = function(req,res){
 		try{
 			body = JSON.parse(body);
 		}catch(e){}
+		if(error) res.statusCode = 400;
 		res.send({error: error, 
 					status : statusCode, 
 					headers : headers , 
@@ -185,7 +186,7 @@ exports.downloadAllRequests = function(req,res){
 var MAX_SCHEMA_SIZE = 3000;
 exports.produceRandomJSON = function(req,res){
 	console.log(req.body);
-	
+
 	if(!req.body || (!req.body.schema && !req.params.schemaId && !req.query.schemaURL)){
 		res.statusCode = 400;
 		return res.send({code: '001', error: 'No schema body or schema id set'});

@@ -56,10 +56,12 @@ angmodule.factory('APIProxy', ['$http', function ($http) {
 				headers : headers || [],
 				body : body || null,
 			}
-
+			console.log(config);
 			$http.post('/api/request/call',config)
 			.success(function(data, status, headers, config) {
-			  	if(status !== 200) callbackError(data);
+			  	if(status !== 200){
+			  		callbackError(data);
+			  	}
 				else callbackSuccess(data);
 			  })
 			  .error(function(err) {

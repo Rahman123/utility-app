@@ -59,7 +59,8 @@
 	<tr>
 		<td>Body</td>
 		<td>
-			<textarea class="form-control" ng-model="body"></textarea>
+			<textarea class="form-control" style="height: 50px;" ng-model="body" 
+						onfocus="$(this).height(300);" ondblclick="$(this).height(50);"></textarea>
 		</td>
 	</tr>
 	<tr>
