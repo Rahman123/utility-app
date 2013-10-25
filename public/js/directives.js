@@ -59,7 +59,8 @@ angmodule.directive('jsonTree', function($compile) {
           var ul = $('<ul/>').addClass('json-tree-ul');
           var liInnser = $('<li></li>');
           ul.append(liInnser);
-          var fName = $('<span ng-init="show = []; show[0]=true" class="json-tree-toggle" ng-click="show[0]=!show[0]">+</span><span>{</span>');
+          var fName = $('<span ng-init="show = []; show[0]=true" class="json-tree-toggle" ng-click="show[0]=!show[0]">'
+                        +'<span ng-show="show[0]">-</span><span ng-hide="show[0]">+</span></span><span>{</span>');
           var valElement = $('<span ng-show="show[0]"/>');
           liInnser.append(fName).append(valElement);
           traverse(newVal,valElement,false);
@@ -91,7 +92,8 @@ angmodule.directive('jsonTree', function($compile) {
             }
             else if(typeof value.length !== 'undefined'){
               liInnser = $('<li></li>');
-              fName = $(fn+'<span ng-init="show['+nodeIndex+']=true" class="json-tree-toggle" ng-click="show['+nodeIndex+']=!show['+nodeIndex+']">+</span><span>[</span>');
+              fName = $(fn+'<span ng-init="show['+nodeIndex+']=true" class="json-tree-toggle" ng-click="show['+nodeIndex+']=!show['+nodeIndex+']">'
+                            +'<span ng-show="show['+nodeIndex+']">-</span><span ng-hide="show['+nodeIndex+']">+</span></span><span>[</span>');
               valElement = $('<span  ng-show="show['+nodeIndex+']"/>');
               liInnser.append(fName).append(valElement);
               traverse(value,valElement,true);
@@ -100,7 +102,8 @@ angmodule.directive('jsonTree', function($compile) {
             else{
               //array
               liInnser = $('<li></li>');
-              fName = $(fn+'<span ng-init="show['+nodeIndex+']=true" class="json-tree-toggle" ng-click="show['+nodeIndex+']=!show['+nodeIndex+']">+</span><span>{</span>');
+              fName = $(fn+'<span ng-init="show['+nodeIndex+']=true" class="json-tree-toggle" ng-click="show['+nodeIndex+']=!show['+nodeIndex+']">'
+                        +'<span ng-show="show['+nodeIndex+']">-</span><span ng-hide="show['+nodeIndex+']">+</span></span><span>{</span>');
               valElement = $('<span  ng-show="show['+nodeIndex+']"/>');
               liInnser.append(fName).append(valElement);
               traverse(value,valElement,false);
