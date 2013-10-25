@@ -86,7 +86,7 @@ angmodule.directive('jsonTree', function($compile) {
               //strings
               liInnser = $('<li>'+fn+'"<em>'+value+'</em>",</li>');
             }
-            else if(value === null || value === undefined || typeof value === 'number'){
+            else if(value === null || value === undefined || typeof value === 'number' || typeof value === 'boolean'){
               //numbers
              liInnser = $('<li>'+fn+'<em>'+value+'</em>,</li>');
             }

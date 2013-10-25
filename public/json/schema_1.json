@@ -1,0 +1,18 @@
+{
+	"users" : [
+		{
+			"username" : "STRING",
+			"email" : "EMAIL",
+			"website" : "URL:http",
+			"send-newsletter" : "BOOLEAN",
+			"profile-description" : "TEXTAREA:true",
+			"dob" : "DATE",
+			"salary" : "CURRENCY",
+			"profile" :{
+				"public-email" : "BOOLEAN",
+				"other-emails" : ["EMAIL"],
+				"number-of-accesses" : "INTEGER:1000000:0"
+			}
+		}
+	]
+}
