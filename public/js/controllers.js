@@ -223,8 +223,9 @@ angmodule.controller('RandomJSONCtrl',
             APIProxy.produceRandomJson(schema, schemaURL, schemaId,
                 function(json){
                     $scope.randomJson = json;
-                    $location.hash('_random');
-                    $anchorScroll();
+                    //$location.hash('_random');
+                    //$anchorScroll();
+                    $('#_random').focus();
                 },
                 function(err){
                     $scope.errMsg = err;
