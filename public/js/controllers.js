@@ -138,9 +138,11 @@ angmodule.controller('RequestCtrl',
                     console.log(data);
                     $scope.response = data;
                     $scope.response.error = 'Request completed';
-                    $scope.showHTMLBody=false; 
-                    $scope.showBody=false; 
-                    $scope.showHeader=true;
+                    if(!$scope.showHTMLBody && !$scope.showBody){
+                        $scope.showHTMLBody=false; 
+                        $scope.showBody=false; 
+                        $scope.showHeader=true;
+                    }
                 },
                 function(err) {
                     $scope.response = err;
@@ -303,7 +305,6 @@ angmodule.controller('RequestBinCtrl',
                     function(bin){
                         $scope.errMsg = null;
                         $location.path("/requestBin/"+bin._id);
-                        //$scope.bin = bin;
                     },
                     function(err){
                         console.log(err);
