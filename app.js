@@ -1,5 +1,7 @@
 var express = require('express');
 var routes = require('./routes');
+var C = require('./config');
+var MongoStore = require('connect-mongo')(express);
 var app = express();
 var PORT = process.env.PORT || 5000;
 
@@ -12,9 +14,10 @@ app.configure(function() {
     
     app.use(express.session({
       secret: 'cs secret',
-      maxAge: new Date(Date.now() + 3600000)
+      maxAge: new Date(Date.now() + (24*60*60) ),
+      //store: new MongoStore({ url: C.DB.url })
     }));
-    app.use(express.bodyParser()); // REQUIRED
+    app.use(express.bodyParser());
     app.use(express.logger());
     
 });
