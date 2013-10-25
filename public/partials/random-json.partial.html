@@ -43,7 +43,9 @@
       	<ol>
       		<li>
       			<b>POST</b>: <a>http://utility-app.herokuapp.com/api/randomJson</a><br/>
-      			Body: <i>A valid JSON schema</i>
+      			Headers: <pre>{"Content-Type" : "application/json"}</pre>
+      			Body: <pre>{schema : { ... a valid schema ...} }</pre>
+
       		</li>
       		<li>
       			<b>GET</b>: <a>http://utility-app.herokuapp.com/api/randomJson?schemaURL=</a><i>[Link to a valid schema]</i><br/>
