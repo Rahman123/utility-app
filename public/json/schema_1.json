@@ -2,6 +2,7 @@
 	"users" : [
 		{
 			"username" : "STRING:false",
+			"password" : "STRING:true",
 			"email" : "EMAIL",
 			"website" : "URL:http",
 			"send-newsletter" : "BOOLEAN",

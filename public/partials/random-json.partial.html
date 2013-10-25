@@ -3,13 +3,13 @@
 	<h3>
 		<a data-toggle="modal" href="#helpModal" ng-click="showHelp='API'">Use this API to get random JSON from your app</a>
 	</h3>
-	<h3>Copy a schema <a data-toggle="modal" href="#helpModal" ng-click="showHelp='Schema'">?</a></h3>
+	<h3>Copy a schema <a data-toggle="modal" href="#helpModal" ng-click="showHelp='Schema'" class="btn btn-xs btn-warning">Help</a></h3>
 	<div style="width:60%">
 		<textarea ng-model="schema" style="width:100%" rows="10"></textarea>
 		<br/><br/>
 		<button class="btn btn-info btn-lg btn-block" ng-click="produceJSON()">Generate JSON ...</button>
 		<br/>
-		<h3>Get schema from URL <a data-toggle="modal" href="#helpModal" ng-click="showHelp='ExampleSchemas'">?</a></h3>
+		<h3>Get schema from URL <a data-toggle="modal" class="btn btn-xs btn-warning" href="#helpModal" ng-click="showHelp='ExampleSchemas'">Examples</a></h3>
 		<input class="form-control" ng-model="schemaURL" placeholder="URL of a valid schema"/>
 		<br/>
 		<button class="btn btn-danger btn-lg btn-block" ng-click="produceJSON(schemaURL)">Generate JSON ...</button>

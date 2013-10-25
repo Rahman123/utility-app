@@ -23,8 +23,8 @@ body {
 }
 .json-tree-toggle{
 	cursor: pointer;
-	font-weight: bold;
-	color:green;
+	font-weight: bolder;
+	color:red;
 }
 .json-tree-ul{
 	list-style: none;

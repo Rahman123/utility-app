@@ -1,3 +1,18 @@
 {
-	"simple"
+	"simple" : "STRING:false",
+	"first-array" : [
+		{
+			"integer" : "INTEGER:789:-789",
+			"subnode" :{
+				"double" : "DOUBLE:5",
+				"another-array" :[
+					{
+						"subsubnode" : {
+							"sub-array" : ["URL"]
+						}
+					}
+				]
+			}
+		}
+	]
 }
