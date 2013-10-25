@@ -209,7 +209,7 @@ angmodule.controller('RequestCtrl',
 angmodule.controller('RandomJSONCtrl',
     function($scope, $http, $filter, $location,$anchorScroll, AppUtils, APIProxy){
         //used to get local HOST to get examples from list in AppUtils.Const.SCHEMA_EXAMPLES_LIST
-        $scope.HOST = $location.$$protocol+'://'+$location.$$host+(($location.$$port)?':'+$location.$$port:'');
+        $scope.HOST = $location.$$protocol+'://'+$location.$$host;
         $scope.SCHEMA_EXAMPLES = AppUtils.Const.SCHEMA_EXAMPLES_LIST;
         $scope.errMsg = null;
 
@@ -266,7 +266,7 @@ angmodule.controller('RequestBinCtrl',
         $scope.sessionBins = [];
 
         //used to get current host URL (printed URL to call the service on the partial page)
-        $scope.HOST = $location.$$protocol+'://'+$location.$$host+(($location.$$port)?':'+$location.$$port:'');
+        $scope.HOST = $location.$$protocol+'://'+$location.$$host;
 
         //load request bin (if id is given)
         $scope.init = function(){

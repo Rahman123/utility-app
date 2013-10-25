@@ -19,6 +19,7 @@ app.configure(function() {
     }));
     
     //parse raw body
+    /*
     app.use(function(req, res, next) {
         var data = '';
         req.setEncoding('utf8');
@@ -30,6 +31,7 @@ app.configure(function() {
         });
         next();
     });
+*/
     app.use(express.bodyParser());
     app.use(express.logger());
     
