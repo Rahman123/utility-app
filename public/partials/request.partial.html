@@ -107,7 +107,13 @@
 
 
 </h4>
+<!--
 <pre style="height:400px; overflow: auto;" ng-show="showHeader && response.headers">{{response.headers | json}}</pre>
+-->
+<div style="height:400px; overflow: auto;" ng-show="showHeader && response.headers" class="well well-small">
+	<data-json-tree ng-model="response.headers"></data-json-tree>
+</div>
+
 <pre style="height:400px; overflow: auto;" ng-show="showBody && response.body">{{response.body | json}}</pre>
 <div style="height:400px;" ng-show="showHTMLBody && response.body">
 	<data-ng-iframe ng-model="response.body"/>

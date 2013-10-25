@@ -1,6 +1,9 @@
 <h1>Random json generator</h1>
 <center>
-	<h3>Copy a schema <a data-toggle="modal" href="#helpModal">?</a></h3>
+	<h3>
+		<a data-toggle="modal" href="#helpModal" ng-click="showAPIHelp=true; showSchemaHelp=false;">Use this API to get random JSON from your app</a>
+	</h3>
+	<h3>Copy a schema <a data-toggle="modal" href="#helpModal" ng-click="showSchemaHelp=true; showSchemaHelp=true">?</a></h3>
 	<div style="width:60%">
 		<textarea ng-model="schema" style="width:100%" rows="10"></textarea>
 		<br/><br/>
@@ -35,9 +38,21 @@
         <button type="button" class="close"  data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Session's Request History</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" ng-show="showAPIHelp">
+      	<p>To get a random JSON via api, use the following methods:</p>
+      	<ol>
+      		<li>
+      			<b>POST</b>: <a>http://utility-app.herokuapp.com/api/randomJson</a><br/>
+      			Body: <i>A valid JSON schema</i>
+      		</li>
+      		<li>
+      			<b>GET</b>: <a>http://utility-app.herokuapp.com/api/randomJson?schemaURL=</a><i>[Link to a valid schema]</i><br/>
+      		</li>
+      	</ol>
+      </div>
+      <div class="modal-body" ng-show="showSchemaHelp">
       	<h5>This is an example of a valid schema</h5>
-<pre style="height:400px; overflow:auto;">
+<pre style="height:400px; overflow:auto; width:100%">
 {
 	"integer" : "INTEGER:MAX:MIN",
 	"double" : "DOUBLE:PRECISION:MAX:MIN",
