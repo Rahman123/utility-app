@@ -17,6 +17,10 @@ body {
 	cursor:pointer;
 }
 
+.request-bin-selected{
+	font-weight: bold;
+}
+
 /* JSON tree */
 .json-tree-container{
 	font-family: monospace;

@@ -132,6 +132,7 @@ angmodule.controller('RequestCtrl',
         $scope.response = {}; 
         $scope.requestCall = function(){
             $scope.request = {}; 
+            console.log( $scope.body);
             APIProxy.requestCall($scope.url, $scope.method, $scope.headers, $scope.body, 
                 function(data){
                     console.log(data);
@@ -253,6 +254,70 @@ angmodule.controller('RandomJSONCtrl',
                 });
         }
         $scope.fetchHelpSchemaJson();
+});
+
+/* Request Bin */
+angmodule.controller('RequestBinCtrl', 
+     function($scope, $http, $routeParams, $location,AppUtils, APIProxy){
+        console.log($routeParams.binId);
+        $scope.bin = null;
+        $scope.errMsg = null;
+        $scope.selectedRequestBin = null;
+        $scope.sessionBins = [];
+
+        //used to get current host URL (printed URL to call the service on the partial page)
+        $scope.HOST = $location.$$protocol+'://'+$location.$$host+(($location.$$port)?':'+$location.$$port:'');
+
+        //load request bin (if id is given)
+        $scope.init = function(){
+            //load requested bin
+            if($routeParams.binId){
+                APIProxy.getRequestBin($routeParams.binId,
+                    function(bin){
+                        $scope.errMsg = null;
+                        $scope.bin = bin;
+                    },
+                    function(err){
+                        $scope.bin = null;
+                        $scope.errMsg = err;
+                    });
+            }else{
+                APIProxy.getSessionRequestBins(
+                    function(bins){
+                        $scope.errMsg = null;
+                        $scope.sessionBins = bins;
+                    },
+                    function(err){
+                        $scope.sessionBins = [];
+                        $scope.errMsg = err;
+                    });
+                
+            }
+
+        }
+
+        $scope.createBin = function(){
+            $scope.errMsg = null;
+            $scope.bin = null;
+            APIProxy.createRequestBin(
+                    function(bin){
+                        $scope.errMsg = null;
+                        $location.path("/requestBin/"+bin._id);
+                        //$scope.bin = bin;
+                    },
+                    function(err){
+                        console.log(err);
+                        $scope.bin = null;
+                        $scope.errMsg = err;
+                    });
+        }
+
+        $scope.selectRequest = function(r){
+            $scope.selectedRequestBin = r;
+        }
+
+        $scope.init();
+
 });
 
 function handleError(msg){

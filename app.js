@@ -17,6 +17,19 @@ app.configure(function() {
       expires: new Date(Date.now() + (24*60*60) ),
       store: new MongoStore({ url: C.DB.url })
     }));
+    
+    //parse raw body
+    app.use(function(req, res, next) {
+        var data = '';
+        req.setEncoding('utf8');
+        req.on('data', function(chunk) { 
+            data += chunk;
+        });
+        req.on('end', function() {
+            req.rawBody = data;
+        });
+        next();
+    });
     app.use(express.bodyParser());
     app.use(express.logger());
     
@@ -40,6 +53,20 @@ app.get('/api/requests',routes.downloadAllRequests);
 
 app.post('/api/randomJson', routes.produceRandomJSON);
 app.get('/api/randomJson/:schemaId', routes.produceRandomJSON);
+
+app.post('/api/requestBin/create', routes.newRequestBin);
+app.get('/api/requestBin/get/:id', routes.getRequestBin);
+app.get('/api/requestBin/getSession', routes.getSessionRequestBins);
+
+/* Request BIN APIs */
+app.post('/api/requestToBin/:id', routes.requestToBin);
+app.get('/api/requestToBin/:id', routes.requestToBin);
+app.put('/api/requestToBin/:id', routes.requestToBin);
+app.delete('/api/requestToBin/:id', routes.requestToBin);
+app.head('/api/requestToBin/:id', routes.requestToBin);
+app.options('/api/requestToBin/:id', routes.requestToBin);
+app.trace('/api/requestToBin/:id', routes.requestToBin);
+//app.connect('/api/requestToBin/:id', routes.requestToBin);
 
 exports.server = app.listen(PORT, function() {
     console.log("Listening on " + PORT);

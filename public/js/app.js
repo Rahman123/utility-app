@@ -47,7 +47,14 @@ angmodule.config(['$routeProvider', function ($routeProvider) {
 			templateUrl: '/public/partials/random-json.partial.html',
 			controller: 'RandomJSONCtrl'
 		})
-		
+		.when('/requestBin', {
+			templateUrl: '/public/partials/request-bin.partial.html',
+			controller: 'RequestBinCtrl'
+		})
+		.when('/requestBin/:binId', {
+			templateUrl: '/public/partials/request-bin.partial.html',
+			controller: 'RequestBinCtrl'
+		})
 		/*
 		.when('/job/:id', {
 			templateUrl: 'partials/job-detail.partial.html',

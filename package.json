@@ -6,7 +6,8 @@
         "ejs": "*",
         "request":"2.27.x",
         "random-string":"0.1.x",
-        "connect-mongo":"0.3.x"
+        "connect-mongo":"0.3.x",
+        "mongoose": "3.6.x"
     },
     "engines": {
         "node": "0.10.x",

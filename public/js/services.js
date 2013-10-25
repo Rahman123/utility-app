@@ -174,6 +174,41 @@ angmodule.factory('APIProxy', ['$http', function ($http) {
 			  	callbackError(err);
 			  });
 		},
-		
+
+		/* gets a request bin given its id */
+		getRequestBin : function(id,callbackSuccess, callbackError){
+			id = id || '';
+			$http.get('/api/requestBin/get/'+id)
+			.success(function(data, status, headers, config) {
+			  	if(status !== 200) callbackError(data);
+				else callbackSuccess(data);
+			  })
+			  .error(function(err) {
+			  	callbackError(err);
+			  });
+		},
+		/* creates a new request bin */
+		createRequestBin : function(callbackSuccess, callbackError){
+			$http.post('/api/requestBin/create')
+			.success(function(data, status, headers, config) {
+			  	if(status !== 200) callbackError(data);
+				else callbackSuccess(data);
+			  })
+			  .error(function(err) {
+			  	callbackError(err);
+			  });
+		},
+
+		/* gets all the bins created in the current session */
+		getSessionRequestBins : function(callbackSuccess, callbackError){
+			$http.get('/api/requestBin/getSession')
+			.success(function(data, status, headers, config) {
+			  	if(status !== 200) callbackError(data);
+				else callbackSuccess(data);
+			  })
+			  .error(function(err) {
+			  	callbackError(err);
+			  });
+		},
 	};
 }]);

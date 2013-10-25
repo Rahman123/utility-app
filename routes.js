@@ -1,7 +1,9 @@
 var request = require('request');
 var randomString = require('random-string');
 var randomJson = require('./random-json');
+var models = require('./model.js');
 var MAX_SESSION_SIZE = 10;
+var MAX_REQUESTS_PER_BIN = 10;
 
 //Base64 decode a string
 exports.base64Decode = function(req,res){
@@ -62,21 +64,6 @@ exports.requestCall = function(req,res){
 		body : req.body.body || null,  
 	};
 	request(options,function(error, response, body){
-		console.log(body);
-		/*
-		if(!req.session.requests)req.session.requests = [];
-		options.headers = req.body.headers;
-		var requestSession = {request: options,
-									timestamp: Date.now(),
-									id : randomString({length: 20})
-							};
-		if(req.session.requests.length >= MAX_SESSION_SIZE){
-			req.session.requests.unshift(requestSession);
-			req.session.requests.pop();
-		}
-		else
-			req.session.requests.push(requestSession);
-		*/
 		response = response || null;
 		body = body || null;
 		statusCode = (response)? response.statusCode : null;
@@ -241,4 +228,86 @@ exports.produceRandomJSON = function(req,res){
 			return res.send(produced);
 		});
 	}
+}
+
+/*  creates a request bin */
+exports.newRequestBin = function(req,res){
+	var bin = new models.RequestBin();
+	if(!req.session.requestBins) req.session.requestBins = [];
+	bin.save(function(err,bin){
+		if(err){
+			res.statusCode = 400;
+			return res.send(err);
+		}
+		req.session.requestBins.push(bin._id);
+		res.send(bin);
+	});
+}
+
+/* gets a request bin */
+exports.getRequestBin = function(req,res){
+	if(!req.params || !req.params.id){
+		res.statusCode = 400;
+		return res.send('Invalid request: missing bin id');
+	}
+	models.RequestBin.findOne({_id : req.params.id}, function(err,bin){
+		if(!bin) err = 'No result found';
+		if(err){
+			res.statusCode = 400;
+			return res.send(err);
+		}
+		res.send(bin);
+	});
+}
+
+/* gets session request bins */
+exports.getSessionRequestBins = function(req,res){
+	if(!req.session.requestBins) req.session.requestBins = [];
+	models.RequestBin.find({_id : {'$in': req.session.requestBins}},'_id created',{sort: {'created':-1}}, function(err,bins){
+		if(err){
+			res.statusCode = 400;
+			return res.send(err);
+		}
+		res.send(bins);
+	});
+}
+
+/* logs a request */
+exports.requestToBin = function(req,res){
+	if(!req.params || !req.params.id){
+		res.statusCode = 400;
+		return res.send('Invalid request: missing bin id');
+	}
+	models.RequestBin.findOne({_id : req.params.id}, function(err,bin){
+		if(!bin) err = 'No result found';
+		if(err){
+			res.statusCode = 400;
+			return res.send(err);
+		}
+		var request = {headers: req.headers, method: req.method, query: req.query, host: req.connection.remoteAddress, body: req.rawBody};
+
+		//sorts children by created date
+		bin.requests.sort(function(a,b){
+		  a = new Date(a.created);
+		  b = new Date(b.created);
+		  return a<b?+1:a>b?-1:0;
+		});
+
+		if(bin.requests.length >= MAX_REQUESTS_PER_BIN){
+			bin.requests.splice(MAX_REQUESTS_PER_BIN-1,1);
+			bin.requests.unshift(request);
+		}else{
+			bin.requests.unshift(request);
+		}
+
+		bin.save(function(err,bin){
+			if(err){
+				res.statusCode = 400;
+				return res.send('Unexpedted exception: '+err);
+			}
+			res.send(request);	//eco
+		});
+	});
+	
+	
 }

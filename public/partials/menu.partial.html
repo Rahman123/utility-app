@@ -11,7 +11,13 @@
           <ul class="nav navbar-nav">
             <li ng-class="{active:isActiveTab('/')}"><a href="#/">Home</a></li>
             <li ng-class="{active:isActiveTab('/about')}"><a href="#/about">About</a></li>
-            <li ng-class="{active:isActiveTab('/request')}"><a href="#/request">HTTP Request</a></li>
+            <li class="dropdown" ng-class="{active:isActiveTab(['/request','/requestBin'])}">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">REST Requests<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li ng-class="{active:isActiveTab('/request')}"><a href="#/request">Make a Request</a></li>
+                <li ng-class="{active:isActiveTab('/requestBin')}"><a href="#/requestBin">Create a Request Bin</a></li>
+              </ul>
+            </li>
             <li class="dropdown" ng-class="{active:isActiveTab(['/base64','/urlEncode'])}">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Encoding utils <b class="caret"></b></a>
               <ul class="dropdown-menu">

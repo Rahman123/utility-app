@@ -1,0 +1,68 @@
+<h1>HTTP Request Bin</h1>
+<hr/>
+<div class="alert alert-danger" ng-show="errMsg"><strong>Error</strong>: {{errMsg}}}</div>
+<br/>
+
+<div ng-show="bin">
+	<table class="table">
+		<tr>
+			<th>ID</th><td>{{bin._id}}</td>
+		</tr>
+		<tr>
+			<th>Created</th><td>{{bin.created|date:'medium'}}</td>
+		</tr>
+		<tr>
+			<th>Service URL:</th><td><a>{{HOST}}/api/requestToBin/{{bin._id}}</a></td>
+		</tr>
+		<tr>
+			<th><h4>Requests (limit 10)</h4></th><td></td>
+		</tr>
+		<tr>
+			<td>
+				<div ng-repeat="r in bin.requests" style="margin: 4px">
+					<span class="label" class="no-selection" style="cursor:pointer" 
+					ng-class="{'label-warning':(selectedRequestBin._id != r._id),'label-info':(selectedRequestBin._id == r._id) }" 					 
+					ng-click="selectRequest(r)">{{r.method}}: {{r.created|date:'yyyy-MM-dd hh:mm:ssa'}}</span>
+				</div>
+			</td>
+			<td>
+				<div ng-show="selectedRequestBin" style="width:90%">
+					<!--
+					<data-json-tree ng-model="selectedRequestBin"></data-json-tree>
+					-->
+					<b>Method</b>
+					<pre>{{selectedRequestBin.method}}</pre>
+					<b>Created</b>
+					<pre>{{selectedRequestBin.created|date:'EEEE, MMMM d,y hh:mm:ssa'}}</pre>
+					<b>Host</b>
+					<pre>{{selectedRequestBin.host}}</pre>
+					<b>Query String</b>
+					<pre>{{selectedRequestBin.query|json}}</pre>
+					<b>Headers</b>
+					<pre>{{selectedRequestBin.headers|json}}</pre>
+					<b>Body</b>
+					<pre>{{selectedRequestBin.body}}</pre>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<center>
+	<div ng-hide="bin" style="width:70%">
+		<p>Create you own HTTP requet bin and send it your requests</p>
+		<button class="btn btn-success btn-lg btn-block" ng-click="createBin()" style="width:60%">Create a new bin
+		</button>
+		<hr/>
+		<h4>Request bins create in the current session</h4>
+		<table class="table">
+			<tr>
+				<th>ID</th><th>Created</th>
+			</tr>
+			<tr ng-show="!sessionBins || !sessionBins.length"><td colspan="2">No bin in current session</td></tr>
+			<tr ng-repeat="b in sessionBins">
+				<td> <a href="#/requestBin/{{b._id}}">{{b._id}}</a></td>
+				<td>{{b.created|date:'EEEE, MMMM d,y hh:mm:ssa'}}</td>
+			</tr>
+		</table>
+	</div>
+</center>
