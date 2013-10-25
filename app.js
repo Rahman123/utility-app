@@ -17,9 +17,10 @@ app.configure(function() {
       expires: new Date(Date.now() + (24*60*60) ),
       store: new MongoStore({ url: C.DB.url })
     }));
-    
+ 
+    app.use(express.bodyParser());
+
     //parse raw body
-    /*
     app.use(function(req, res, next) {
         var data = '';
         req.setEncoding('utf8');
@@ -28,11 +29,10 @@ app.configure(function() {
         });
         req.on('end', function() {
             req.rawBody = data;
+            
         });
         next();
     });
-*/
-    app.use(express.bodyParser());
     app.use(express.logger());
     
 });
