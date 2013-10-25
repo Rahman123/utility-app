@@ -1,15 +1,15 @@
 <h1>Random json generator</h1>
 <center>
 	<h3>
-		<a data-toggle="modal" href="#helpModal" ng-click="showAPIHelp=true; showSchemaHelp=false;">Use this API to get random JSON from your app</a>
+		<a data-toggle="modal" href="#helpModal" ng-click="showHelp='API'">Use this API to get random JSON from your app</a>
 	</h3>
-	<h3>Copy a schema <a data-toggle="modal" href="#helpModal" ng-click="showSchemaHelp=true; showSchemaHelp=true">?</a></h3>
+	<h3>Copy a schema <a data-toggle="modal" href="#helpModal" ng-click="showHelp='Schema'">?</a></h3>
 	<div style="width:60%">
 		<textarea ng-model="schema" style="width:100%" rows="10"></textarea>
 		<br/><br/>
 		<button class="btn btn-info btn-lg btn-block" ng-click="produceJSON()">Generate JSON ...</button>
 		<br/>
-		<h3>Get schema from URL</h3>
+		<h3>Get schema from URL <a data-toggle="modal" href="#helpModal" ng-click="showHelp='ExampleSchemas'">?</a></h3>
 		<input class="form-control" ng-model="schemaURL" placeholder="URL of a valid schema"/>
 		<br/>
 		<button class="btn btn-danger btn-lg btn-block" ng-click="produceJSON(schemaURL)">Generate JSON ...</button>
@@ -36,56 +36,45 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close"  data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Session's Request History</h4>
+        <h4 class="modal-title">JSON Random Generator Help</h4>
       </div>
-      <div class="modal-body" ng-show="showAPIHelp">
-      	<p>To get a random JSON via api, use the following methods:</p>
-      	<ol>
-      		<li>
-      			<b>POST</b>: <a>http://utility-app.herokuapp.com/api/randomJson</a><br/>
-      			Headers: <pre>{"Content-Type" : "application/json"}</pre>
-      			Body: <pre>{schema : { ... a valid schema ...} }</pre>
+      <div class="modal-body">
+      	<button class="btn btn-xs" ng-disabled="showHelp=='API'" ng-class="{'btn-info':showHelp=='API'}" ng-click="showHelp='API'">API Access</button>
+      	<button class="btn btn-xs" ng-disabled="showHelp=='Schema'" ng-class="{'btn-info':showHelp=='Schema'}" ng-click="showHelp='Schema'">Schemas Info</button>
+      	<button class="btn btn-xs" ng-disabled="showHelp=='ExampleSchemas'" ng-class="{'btn-info':showHelp=='ExampleSchemas'}" ng-click="showHelp='ExampleSchemas'">Example Schemas</button>
+      	<hr/>
+      	<div ng-show="showHelp=='ExampleSchemas'" class="well well-small">
+      		<h4>Selection of example schemas</h4>
+      		<div style="overflow:auto; height:400px">
+	      		<table class="table table-hover" width="100%">
+	      			<tr ng-repeat="ex in SCHEMA_EXAMPLES">
+	      				<td><a href="{{ex.url}}" target="_blank">{{ex.name}}</a></td>
+	      				<td><button class="btn btn-warning btn-xs" data-dismiss="modal" ng-click="copySchemaURL(ex.url)">Copy url</button></td>
+	      			</tr>
+	      		</table>
 
-      		</li>
-      		<li>
-      			<b>GET</b>: <a>http://utility-app.herokuapp.com/api/randomJson?schemaURL=</a><i>[Link to a valid schema]</i><br/>
-      		</li>
-      	</ol>
-      </div>
-      <div class="modal-body" ng-show="showSchemaHelp">
+      		</div>
+      	</div>
+      	<div ng-show="showHelp=='API'">
+	      	<p>To get a random JSON via api, use the following methods:</p>
+	      	<ol>
+	      		<li>
+	      			<b>POST</b>: <a>http://utility-app.herokuapp.com/api/randomJson</a><br/>
+	      			Headers: <pre>{"Content-Type" : "application/json"}</pre>
+	      			Body: <pre>{schema : { ... a valid schema ...} }</pre>
+
+	      		</li>
+	      		<li>
+	      			<b>GET</b>: <a>http://utility-app.herokuapp.com/api/randomJson?schemaURL=</a><i>[Link to a valid schema]</i><br/>
+	      		</li>
+	      	</ol>
+	    </div>
+      <div ng-show="showHelp=='Schema'">
       	<h5>This is an example of a valid schema</h5>
-<pre style="height:400px; overflow:auto; width:100%">
-{
-	"integer" : "INTEGER:MAX:MIN",
-	"double" : "DOUBLE:PRECISION:MAX:MIN",
-	"url" : "URL:PROTOCOL",
-	"currency" : "CURRENCY",
-	"textarea" : "TEXTAREA",
-	"textarea_words" : "TEXTAREA:true",
-	"string":"STRING", 
-	"date":"DATE", 
-	"boolean":"BOOLEAN",
-	"email" : "EMAIL",
-	"subnode" : {
-		"string":"STRING", 
-		"date":"DATE", 
-		"boolean":"BOOLEAN",
-		"integer" : "INTEGER",
-		"double" : "DOUBLE",
-		"url" : "URL",
-		"array_subnode" : [
-			{"url": "URL"}
-		]
-	},
-	"array_objects" : [
-		{
-			"string" : "STRING",
-			"date" : "DATE"
-		}
-	],
-	"array_values" : ["INTEGER"]
-}
-</pre>
+<div style="height:400px; overflow:auto; width:100%" class="well well-small">
+	<data-json-tree ng-model="helpSchemaJson"></data-json-tree>
+</div>
+		</div>
 		</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

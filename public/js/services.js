@@ -1,5 +1,7 @@
 'use strict';
 
+var HOST = 'http://localhost:5000/'
+
 angmodule.factory('AppUtils', ['$http', function ($http) {
 	return {
 		/* app constants */
@@ -15,10 +17,38 @@ angmodule.factory('AppUtils', ['$http', function ($http) {
 						"If-Match","If-Modified-Since","If-None-Match","If-Range","If-Unmodified-Since","Max-Forwards",
 						"Origin","Pragma","Proxy-Authorization","Range","Referer[sic]","TE","Upgrade","User-Agent","Via",
 						"Warning","Host","X-Requested-With","DNT","X-Forwarded-For","X-Forwarded-Proto","Front-End-Https",
-						"X-ATT-DeviceId","X-Wap-Profile","Proxy-Connection"]
+						"X-ATT-DeviceId","X-Wap-Profile","Proxy-Connection"],
+			//json url that shows the possibile structure of a schema
+			SCHEMA_EXAMPLE_URL : "/public/json/schema.json",
+			//list of schema examples
+			SCHEMA_EXAMPLES_LIST :[
+				{
+					name : "Users list",
+					url : "/public/json/schema_1.json"
+				},
+				{
+					name : "Random numbers",
+					url : "/public/json/schema_2.json"
+				},
+				{
+					name : "Complex structure",
+					url : "/public/json/schema_3.json"
+				}
+			],
 		},
 
-
+		/* fetch a content */
+		fetchContent : function(url, callbackSuccess, callbackError){
+			url = url || null;
+			$http.get(url)
+			.success(function(data, status, headers, config) {
+			  	if(status !== 200) callbackError(data);
+				else callbackSuccess(data);
+				})
+			.error(function(data, status, headers, config) {
+				callbackError(data);
+			});
+		}
 	};
 }]);
 

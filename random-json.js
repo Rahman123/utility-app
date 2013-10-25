@@ -40,8 +40,12 @@ function _recursiveSchema(field,schema){
 		if(node === TYPES.DATE){
 			return randomDate(new Date(2000, 0, 1), new Date())
 		}
-		if(node === TYPES.STRING){
-			return randomString({length: randomInteger(30,5), special: true});
+		if(node.indexOf(TYPES.STRING)){
+			var opt = node.split(':');
+			var special = (opt.length > 1)?opt[1]:false;
+			if(special!== false && special === 'true') special = true;
+			else special = false;
+			return randomString({length: randomInteger(30,5), special: special});
 		}
 		if(node.indexOf(TYPES.INTEGER)===0){
 			var opt = node.split(':');

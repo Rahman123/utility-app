@@ -1,0 +1,6 @@
+{
+	"random-integers" : ["INTEGER:800:-800"],
+	"random-doubles" : ["DOUBLE"],
+	"random-doubles-with-ranges" : ["DOUBLE:2:50:-1000"],
+	"random-booleans" : ["BOOLEAN"]
+}

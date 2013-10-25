@@ -207,6 +207,9 @@ angmodule.controller('RequestCtrl',
 
 angmodule.controller('RandomJSONCtrl',
     function($scope, $http, $filter, $location,$anchorScroll, AppUtils, APIProxy){
+        //used to get local HOST to get examples from list in AppUtils.Const.SCHEMA_EXAMPLES_LIST
+        $scope.HOST = $location.$$protocol+'://'+$location.$$host+(($location.$$port)?':'+$location.$$port:'');
+        $scope.SCHEMA_EXAMPLES = AppUtils.Const.SCHEMA_EXAMPLES_LIST;
         $scope.errMsg = null;
 
         $scope.produceJSON = function(schemaURL, schemaId){
@@ -233,6 +236,23 @@ angmodule.controller('RandomJSONCtrl',
                     $scope.errMsg = err;
                 });
         }
+
+        $scope.copySchemaURL = function(url){
+            $scope.schemaURL= $scope.HOST+url;
+        }
+
+        //gets the json schema
+        $scope.fetchHelpSchemaJson = function() {
+            AppUtils.fetchContent(AppUtils.Const.SCHEMA_EXAMPLE_URL, 
+                function(result){
+                    $scope.helpSchemaJson = result;
+                    if(!$scope.helpSchemaJson) {error : "Problems getting file..."}
+                },
+                function(err){
+                    $scope.helpSchemaJson = {error : "Missing file..."};
+                });
+        }
+        $scope.fetchHelpSchemaJson();
 });
 
 function handleError(msg){
