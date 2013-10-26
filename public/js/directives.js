@@ -87,11 +87,11 @@ angmodule.directive('jsonTree', function($compile) {
 
             if(typeof value === 'string'){
               //strings
-              liInnser = $('<li>'+fn+'"<em>'+value+'</em>",</li>');
+              liInnser = $('<li>'+fn+'"<em>'+htmlEntities(value)+'</em>",</li>');
             }
             else if(value === null || value === undefined || typeof value === 'number' || typeof value === 'boolean'){
               //numbers
-             liInnser = $('<li>'+fn+'<em>'+value+'</em>,</li>');
+             liInnser = $('<li>'+fn+'<em>'+htmlEntities(value)+'</em>,</li>');
             }
             else if(typeof value.length !== 'undefined'){
               liInnser = $('<li></li>');
@@ -122,3 +122,7 @@ angmodule.directive('jsonTree', function($compile) {
       }
     };
   });
+
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}

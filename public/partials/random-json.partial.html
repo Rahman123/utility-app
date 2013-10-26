@@ -24,8 +24,13 @@
 		-->
 	</div>
 	<h3 id="_random">Random json produced</h3>
-	<div style="text-align:left; overflow:auto; width: 70%; height: 500px" class="well well-small">
+	<button class="btn" ng-disabled="!showRaw" ng-class="{'btn-default':showRaw, 'btn-info':!showRaw}" ng-click="showRaw=false">JSON</button>
+	<button class="btn" ng-disabled="showRaw" ng-class="{'btn-default':!showRaw, 'btn-info':showRaw}" ng-click="showRaw=true">RAW</button>
+	<div ng-hide="showRaw" style="text-align:left; overflow:auto; width: 70%; height: 500px" class="well well-small">
 		<data-json-tree ng-model="randomJson"></data-json-tree>
+	</div>
+	<div ng-show="showRaw">
+		<textarea   style="width: 70%; height: 500px; font-family:monospace" readonly="readonly" class="well well-small">{{randomJson|json}}</textarea>
 	</div>
 </center>
 

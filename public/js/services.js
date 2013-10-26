@@ -52,6 +52,15 @@ angmodule.factory('AppUtils', ['$http', function ($http) {
 			.error(function(data, status, headers, config) {
 				callbackError(data);
 			});
+		},
+
+		/* copy to clipboard*/
+		copyToClipboard : function(value)
+		{
+			var txtInput = $('#holdText').val(value);
+			var copied = txtInput[0].createTextRange();  
+			copied.execCommand("RemoveFormat");  
+			copied.execCommand("Copy");  
 		}
 	};
 }]);

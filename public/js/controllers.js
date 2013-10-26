@@ -256,6 +256,12 @@ angmodule.controller('RandomJSONCtrl',
                     $scope.helpSchemaJson = {error : "Missing file..."};
                 });
         }
+
+        //copies random json to clipdoard
+        $scope.copyToClipboard = function(){
+            AppUtils.copyToClipboard($scope.randomJson);
+        }
+
         $scope.fetchHelpSchemaJson();
 });
 
