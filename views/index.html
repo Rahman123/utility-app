@@ -35,19 +35,19 @@
   </head>
 
   <body ng-controller="GlobalCtrl" style="height:100%">
+  <div id="wrap">
+      <!-- Static navbar -->
+      <div class="navbar navbar-default navbar-static-top" >
+        <ng-include src="'/public/partials/menu.partial.html'"></ng-include>
+      </div>
 
-    <!-- Static navbar -->
-    <div class="navbar navbar-default navbar-static-top" >
-      <ng-include src="'/public/partials/menu.partial.html'"/>
+
+      <div class="container" ng-view >
+      </div> <!-- /container -->
     </div>
-
-
-    <div class="container" ng-view >
-    </div> <!-- /container -->
-
-    <div class="footer">
+    <div id="footer">
       <hr/>
-        <center><p class="text-muted credit"><a href="http://about.m/enreeco">Enrico Murru</a> &copy; 2013</p></center>
+        <p class="text-muted credit" ><a href="http://about.m/enreeco" >Enrico Murru</a> &copy; 2013</p>
     </div>
 
     <!-- Bootstrap core JavaScript
