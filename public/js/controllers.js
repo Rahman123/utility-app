@@ -252,6 +252,7 @@ angmodule.controller('RandomJSONCtrl',
                     if(!$scope.helpSchemaJson) {error : "Problems getting file..."}
                 },
                 function(err){
+                    console.log(err);
                     $scope.helpSchemaJson = {error : "Missing file..."};
                 });
         }

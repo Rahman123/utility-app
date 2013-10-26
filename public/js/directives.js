@@ -60,7 +60,7 @@ angmodule.directive('jsonTree', function($compile) {
           var liInnser = $('<li></li>');
           ul.append(liInnser);
 
-          var isArray = (typeof newVal.length !== 'undefined');
+          var isArray = (newVal && typeof newVal.length !== 'undefined');
 
           var fName = $('<span ng-init="show = []; show[0]=true" class="json-tree-toggle" ng-click="show[0]=!show[0]">'
                         +'<span ng-show="show[0]">-</span><span ng-hide="show[0]">+</span></span><span>'+((isArray)?'[':'{')+'</span>');
