@@ -24,8 +24,8 @@
 		]
 	},
 	"array2" : [
-		MIN_INDEX_VALUE,
-		MAX_INDEX,
+		0,
+		100,
 		{
 			"string" : "STRING",
 			"date" : "DATE"
