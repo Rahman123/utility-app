@@ -1,5 +1,6 @@
 'use strict';
 var randomString = require('random-string');
+var moment = require('moment');
 
 var TYPES = {
 	DATE : "DATE",
@@ -10,7 +11,8 @@ var TYPES = {
 	BOOLEAN : "BOOLEAN",
 	URL : "URL",
 	EMAIL : "EMAIL",
-	CURRENCY : "CURRENCY"
+	CURRENCY : "CURRENCY",
+	COSTANT : "COSTANT"
 };
 
 var MAX_ARRAY_SIZE = 50;
@@ -23,11 +25,11 @@ module.exports = function randomJson(options){
 		return {error: 'Missing schema'};
 	}
 	var rnd = {};
-	console.log(options);
-	for(var v in options.schema){
+	
+	/*for(var v in options.schema){
 		rnd[v] = _recursiveSchema(v, options.schema);
-	}
-
+	}*/
+	rnd = _recursiveSchema(null, options.schema);
 	return rnd;
 }
 
@@ -37,28 +39,37 @@ function _recursiveSchema(field,schema){
 	if(!node) return "";
 
 	if(typeof node === 'string'){
-		if(node === TYPES.DATE){
-			return randomDate(new Date(2000, 0, 1), new Date())
+		if(node.indexOf(TYPES.DATE)===0){
+			var opt = node.split(':');
+			var protocol = (opt.length > 1)?opt[1]:null;
+			opt.splice(0,1);
+			var format = opt.join(':');
+			return randomDate(format, new Date(2000, 0, 1), new Date())
 		}
 		if(node.indexOf(TYPES.STRING)===0){
 			var opt = node.split(':');
 			var special = (opt.length > 1)?opt[1]:false;
 			if(special!== false && special === 'true') special = true;
 			else special = false;
-			return randomString({length: randomInteger(30,5), special: special});
+			var numbers = (opt.length > 2)?opt[2]:false;
+			if(numbers!== false && numbers === 'true') numbers = true;
+			else numbers = false;
+			var min = (opt.length > 3)?opt[3]:5;
+			var max = (opt.length > 4)?opt[4]:30;
+			return randomString({length: randomInteger(min,max), special: special, numeric: numbers});
 		}
 		if(node.indexOf(TYPES.INTEGER)===0){
 			var opt = node.split(':');
-			var max = (opt.length > 1)?opt[1]:null;
-			var min = (opt.length > 2)?opt[2]:null;
-			return randomInteger(max,min);
+			var max = (opt.length > 2)?opt[2]:null;
+			var min = (opt.length > 1)?opt[1]:null;
+			return randomInteger(min,max);
 		}
 		if(node.indexOf(TYPES.DOUBLE)===0){
 			var opt = node.split(':');
 			var precision = (opt.length > 1)?opt[1]:null;
-			var max = (opt.length > 2)?opt[2]:null;
-			var min = (opt.length > 3)?opt[3]:null;
-			return randomDouble(precision,max,min);
+			var min = (opt.length > 2)?opt[2]:null;
+			var max = (opt.length > 3)?opt[3]:null;
+			return randomDouble(precision,min,max);
 		}
 		if(node === TYPES.BOOLEAN){
 			return randomBoolean();
@@ -68,16 +79,25 @@ function _recursiveSchema(field,schema){
 			var protocol = (opt.length > 1)?opt[1]:null;
 			return randomURL(protocol);
 		}
+		if(node.indexOf(TYPES.COSTANT)===0){
+			var opt = node.split(':');
+			var protocol = (opt.length > 1)?opt[1]:null;
+			opt.splice(0,1);
+			return opt.join(':');
+		}
 		if(node === TYPES.EMAIL){
 			return randomEmail();
 		}
 		if(node === TYPES.CURRENCY){
-			return randomCurrency();
+			var opt = node.split(':');
+			var max = (opt.length > 2)?opt[2]:null;
+			var min = (opt.length > 1)?opt[1]:null;
+			return randomCurrency(min,max);
 		}
 		if(node.indexOf(TYPES.TEXTAREA)===0){
 			var opt = node.split(':');
 			var wordsStyle = (opt.length > 1)?opt[1]:null;
-			if(!wordsStyle)return randomString({length: randomInteger(2500,100), special: true});
+			if(!wordsStyle)return randomString({length: randomInteger(100,2500), special: true});
 			else return randomWordsString();
 		}
 		
@@ -91,9 +111,22 @@ function _recursiveSchema(field,schema){
 			return subnode;
 		}else{
 			var subnode = [];
+			var min = null;
+			var max = null;
 			for(var i in node){
-
-				var maxChild = randomInteger(MAX_ARRAY_SIZE);
+				if(typeof node[i] === 'number'){
+					if(min === null){
+						min = node[i];
+						continue;
+					}
+					else if(max === null){ 
+						max = node[i];
+						continue;
+					}
+				}
+				if(max === null) max = MAX_ARRAY_SIZE;
+				if(min === null) min = 0;
+				var maxChild = randomInteger(min,max);
 				for(var x = 0; x < maxChild; x++){
 					subnode.push(_recursiveSchema(null,node[i]));
 				}
@@ -104,12 +137,23 @@ function _recursiveSchema(field,schema){
 }
 
 
-function randomDate(start, end) {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+function randomDate(format,start, end) {
+    var tmpDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    if(format){
+    	try{
+    		return moment([tmpDate.getFullYear(), tmpDate.getMonth(), tmpDate.getDay()+1,
+    			tmpDate.getHours(), tmpDate.getMinutes(), tmpDate.getSeconds()]).format(format);
+    	}
+    	catch(exc){
+    		return tmpDate.toString();
+    	}
+    }
+    else
+    	return tmpDate.toString();
 }
 
-function randomInteger(max,min){
-	return parseInt(randomDouble(0,max,min));
+function randomInteger(min,max){
+	return parseInt(randomDouble(0,min,max));
 }
 
 function randomDouble(precision,max,min){
@@ -125,7 +169,7 @@ function randomDouble(precision,max,min){
 
 	precision = parseInt(precision);
 	var result = (min + Math.random()*Math.abs(max-min));
-	if(!(precision >=0)) precision = randomInteger(11,0);
+	if(!(precision >=0)) precision = randomInteger(0,11);
 	if(precision >= 0) return result.toFixed(precision);
 	return result;
 }
@@ -147,14 +191,14 @@ function randomURL(protocol){
 
 	url += '.';
 
-	url += randomString({length: randomInteger(15,3)});
+	url += randomString({length: randomInteger(3,15)});
 
 	url += '.';
 
-	url += randomString({length: 1, numeric: false}) + randomString({length: randomInteger(3,1),numeric: false});
+	url += randomString({length: 1, numeric: false}) + randomString({length: randomInteger(1,3),numeric: false});
 
 	if(Math.random() > 0.5){
-		url += '/'+randomString({length: randomInteger(10,3)})+'.'+randomString({length:3});
+		url += '/'+randomString({length: randomInteger(3,10)})+'.'+randomString({length:3});
 	}
 
 	return url.toLowerCase();
@@ -163,21 +207,23 @@ function randomURL(protocol){
 
 function randomEmail(){
 	var email = '';
-	email += randomString({length:randomInteger(7,1),numeric: false})
-			+ randomInteger(2)
+	email += randomString({length:randomInteger(1,7),numeric: false})
+			+ randomInteger(0,2)
 			+ ((Math.random()>0.5)?'.':'_')
-			+ randomString({length:randomInteger(10,1),numeric: false})
+			+ randomString({length:randomInteger(1,10),numeric: false})
 			+'@'
-			+ randomString({length: 1, numeric: false})+randomString({length:randomInteger(5,2),numeric: false})
+			+ randomString({length: 1, numeric: false})+randomString({length:randomInteger(2,5),numeric: false})
 			+'.'
 			+randomString({length: 2,numeric: false});
 	return email.toLowerCase();
 }
 
-function randomCurrency(){
-	var symbol = randomInteger(3);
+function randomCurrency(min,max){
+	min = min || 0;
+	max = max || 1000000;
+	var symbol = randomInteger(0,3);
 	if(symbol===3) symbol = 2;
-	return CURRENCY_SYMBOLS[symbol] +' '+formatMoney(randomDouble(2,150000,0),2,'.',',');
+	return CURRENCY_SYMBOLS[symbol] +' '+formatMoney(randomDouble(2,min,max),2,'.',',');
 }
 
 /* 
@@ -210,8 +256,8 @@ function formatMoney (n, decimals, decimal_sep, thousands_sep)
 */
 function randomWordsString(){
 	var str = '';
-	for(var i = 0; i < randomInteger(2000,100); i++){
-		str+=' '+randomString({length: randomInteger(10,2), numeric: false});
+	for(var i = 0; i < randomInteger(100,2000); i++){
+		str+=' '+randomString({length: randomInteger(2,10), numeric: false});
 	}
 	return str.toLowerCase();
 }

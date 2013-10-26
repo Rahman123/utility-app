@@ -1,16 +1,17 @@
 {
-	"integer" : "INTEGER:MAX:MIN",
-	"double" : "DOUBLE:PRECISION:MAX:MIN",
+	"integer" : "INTEGER:MIN:MX",
+	"double" : "DOUBLE:PRECISION:MIN:MAX",
 	"url" : "URL:PROTOCOL",
-	"currency" : "CURRENCY",
-	"textarea" : "TEXTAREA",
+	"currency" : "CURRENCY:MIN:MAX",
+	"textarea" : "TEXTAREA:false",
 	"textarea_words" : "TEXTAREA:true",
 	"array3" : [ "EMAIL"],
 	"string":"STRING:false", 
-	"string-with-special":"STRING:true", 
-	"date":"DATE", 
+	"string-with-special":"STRING:SPECIAL_CHARS:NUMERIC:MIN_LENGTH:MAX_LENGTH", 
+	"date":"DATE:FORMAT[see http://momentjs.com/docs/#/displaying/format/]", 
 	"boolean":"BOOLEAN",
 	"email" : "EMAIL",
+	"constant-value" : "COSTANT:costant value",
 	"subnode" : {
 		"string":"STRING", 
 		"date":"DATE", 
@@ -23,6 +24,8 @@
 		]
 	},
 	"array2" : [
+		MIN_INDEX_VALUE,
+		MAX_INDEX,
 		{
 			"string" : "STRING",
 			"date" : "DATE"

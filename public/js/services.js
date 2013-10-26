@@ -33,6 +33,10 @@ angmodule.factory('AppUtils', ['$http', function ($http) {
 				{
 					name : "Complex structure",
 					url : "/public/json/schema_3.json"
+				},
+				{
+					name : "Array of names",
+					url : "/public/json/schema_4.json"
 				}
 			],
 		},
