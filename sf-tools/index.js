@@ -81,12 +81,11 @@ exports.describeGlobal = function(token,callback){
     
         client.describeGlobal(function(err,result,raw){          
           if(err){
-            callback(err);
+            return callback(err);
           }
-          if(!err && result){
-            callback(null, result);//JSON.stringify(result,undefined,2));
-          }
+          
+          callback(null, result);//JSON.stringify(result,undefined,2));
+          
         });
-      }
-  });
+      });
 };
