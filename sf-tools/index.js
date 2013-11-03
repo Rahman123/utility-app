@@ -3,8 +3,8 @@ var crypto = require('crypto');
 var soap = require('soap');
 var C = require('../config');
 
-var partnerWSDL = 'sf-partner.wsdl';
-var metadataWSDL = 'sf-metadata.wsdl';
+var partnerWSDL = '/sf-partner.wsdl';
+var metadataWSDL = '/sf-metadata.wsdl';
 
 
 exports.saveCanvasDetailsInSession = function(req, canvasRequest){
