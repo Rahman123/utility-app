@@ -31,7 +31,11 @@ angmodule.controller("MenuCtrl",
         //tells if we are in the canvas app context
         $scope.sfCanvasDetails = null;
         APIProxy.getSFCanvasDetails(function(details){
-            $scope.sfCanvasDetails = details;
+            console.log(details);
+            if(details.context)
+                $scope.sfCanvasDetails = details;
+            else
+                $scope.sfCanvasDetails = null;
         },
         function(err){
             $scope.sfCanvasDetails = null;
