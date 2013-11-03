@@ -1,5 +1,6 @@
 var request = require('request');
 var crypto = require('crypto');
+var soap = require('soap');
 var C = require('../config');
 
 var partnerWSDL = './sf-partner.wsdl';
