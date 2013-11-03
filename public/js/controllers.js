@@ -13,7 +13,7 @@ angmodule.controller("GlobalCtrl",
 );
 
 angmodule.controller("MenuCtrl",
-    function($scope, $http, $filter, $location, AppUtils){
+    function($scope, $http, $filter, $location, AppUtils, APIProxy){
         console.log('MenuCtrl');
 
         $scope.isActiveTab   = function(tabNameURL) {
