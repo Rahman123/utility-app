@@ -1,5 +1,24 @@
-<h1>Force.com Tools</h1>
+<h1>Describe Metadata</h1>
 <div class="alert alert-danger" ng-show="errMsg"><strong>Error</strong>: {{errMsg}}}</div>
-<pre class="well well-small">
-{{globalDescribe}}
-</pre>
+
+<div class="well well-small"  style="overflow:auto; height:350px">
+	<div class="row">
+		<div class="col-md-8">
+			<input type="search" placeholder="Search..." ng-model="filterObj" class="form-control"/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4"><b>Label</b></div>
+		<div class="col-md-4"><b>API Name</b></div>
+	</div>
+	<div class="row" ng-repeat="obj in globalDescribe.result.sobjects|orderBy:'label'|filter:filterObj">
+		<div class="col-md-4">{{obj.label}}</div>
+		<div class="col-md-4">{{obj.name}}</div>
+	</div>
+</div>
+
+<!--
+<div class="well well-small" style="overflow:auto; height:350px">
+	<data-json-tree ng-model="globalDescribe"></data-json-tree>
+</div>
+-->

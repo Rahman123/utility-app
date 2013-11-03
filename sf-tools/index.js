@@ -3,8 +3,8 @@ var crypto = require('crypto');
 var soap = require('soap');
 var C = require('../config');
 
-var partnerWSDL = '/sf-partner.wsdl';
-var metadataWSDL = '/sf-metadata.wsdl';
+var partnerWSDL = './sf-tools/sf-partner.wsdl';
+var metadataWSDL = './sf-tools/sf-metadata.wsdl';
 
 
 exports.saveCanvasDetailsInSession = function(req, canvasRequest){
@@ -84,10 +84,10 @@ exports.describeGlobal = function(token,endpoint,callback){
         client.setEndpoint(endpoint);
         var sheader = {SessionHeader:{sessionId: token}};
         client.addSoapHeader(sheader,"","tns","");
-
+        console.log(token);
         client.describeGlobal(function(err,result,raw){          
           if(err){
-            return callback(err);
+            return callback(err+'');
           }
           
           callback(null, result);//JSON.stringify(result,undefined,2));

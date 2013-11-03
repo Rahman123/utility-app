@@ -346,8 +346,8 @@ exports.sfDescribeGlobal = function(req,res){
 		res.statusCode = 400;
 		return res.send({error:'No canvas details'});
 	}
-	var endpoint = token.context.links.partnerUrl;
-	sftools.describeGlobal(token.context.oauthToken,endpoint, function(err,result){
+	var endpoint = token.client.instanceUrl+token.context.links.partnerUrl;
+	sftools.describeGlobal(token.client.oauthToken,endpoint, function(err,result){
 		if(err){
 			res.statusCode = 400;
 			return res.send({error: err});
