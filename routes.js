@@ -2,6 +2,8 @@ var request = require('request');
 var randomString = require('random-string');
 var randomJson = require('./random-json');
 var models = require('./model.js');
+var sftools = require('./sf-tools');
+var C = require('./config');
 var MAX_SESSION_SIZE = 10;
 var MAX_REQUESTS_PER_BIN = 10;
 
@@ -310,4 +312,20 @@ exports.requestToBin = function(req,res){
 	});
 	
 	
+}
+
+/*
+	Handles the POST request made by the Canvas App (Salesforce)
+*/
+exports.sfCanvasCallback = function(req,res){
+	
+	sftools.canvasCallback(req.body, C.SF.clientSecret, function(error, canvasRequest){
+		if(error){
+			res.statusCode = 400;
+			return res.send({error: error});
+		}
+		sftools.saveCanvasDetailsInSession(req,canvasRequest);
+		console.log(sftools.getCanvasDetails(req));
+		return res.redirect('/');
+	});
 }

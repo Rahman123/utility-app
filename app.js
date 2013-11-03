@@ -3,7 +3,7 @@ var routes = require('./routes');
 var C = require('./config');
 var MongoStore = require('connect-mongo')(express);
 var app = express();
-var PORT = process.env.PORT || 5000;
+var PORT = C.PORT;
 
 app.configure(function() {
     app.use('/public',express.static(__dirname + '/public'));
@@ -41,6 +41,7 @@ app.get('/',function(req,res){
     res.render('index',{});
 });
 
+
 app.post('/api/base64/encode', routes.base64Encode);
 app.post('/api/base64/decode', routes.base64Decode);
 
@@ -71,9 +72,48 @@ app.options('/api/requestToBin/:id', routes.requestToBin);
 app.trace('/api/requestToBin/:id', routes.requestToBin);
 //app.connect('/api/requestToBin/:id', routes.requestToBin);
 
+/* SF Tools */
+app.post('/sf/canvas/callback', routes.sfCanvasCallback);
+
 exports.server = app.listen(PORT, function() {
     console.log("Listening on " + PORT);
 });
+
+
+//this is to test the server locally (https)
+//http://stackoverflow.com/questions/13186134/node-js-express-and-heroku-how-to-handle-http-and-https
+//creating certificates http://blog.nategood.com/client-side-certificate-authentication-in-ngi
+
+if(C.NODE_ENV==='dev'){
+    console.log(C.NODE_ENV);
+    var fs = require('fs');
+    var https = require('https');
+
+
+    var options = {
+      key : fs.readFileSync('./ssl/dev/server.key').toString(), 
+      cert : fs.readFileSync('./ssl/dev/server.crt').toString(),
+      ca:     fs.readFileSync('./ssl/dev/ca.crt').toString(),
+      requestCert:        false,
+      rejectUnauthorized: false
+    }
+
+    var PORT_HTTPS = '5443';
+    
+    https.createServer(options, app).listen(PORT_HTTPS, function () {
+        console.log("Express server listening with https on port %d in %s mode", this.address().port, app.settings.env);
+    });
+    
+    app.use(function (req, res, next) {
+        res.setHeader('Strict-Transport-Security', 'max-age=8640000; includeSubDomains');
+        if (!req.secure) {
+            return res.redirect(301, 'https://' + req.host  + ":" + process.env.PORT + req.url);
+        } else {
+            return next();
+            }
+    });
+
+}
 
 
 

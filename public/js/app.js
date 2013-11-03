@@ -55,6 +55,10 @@ angmodule.config(['$routeProvider', function ($routeProvider) {
 			templateUrl: '/public/partials/request-bin.partial.html',
 			controller: 'RequestBinCtrl'
 		})
+		.when('/sf-tools', {
+			templateUrl: '/public/partials/sf-tools.partial.html',
+			controller: 'SFToolsCtrl'
+		})
 		/*
 		.when('/job/:id', {
 			templateUrl: 'partials/job-detail.partial.html',
