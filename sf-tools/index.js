@@ -75,10 +75,14 @@ function verifyAndDecode(input, secret){
 }
 
 /* SObject  global describe */
-exports.describeGlobal = function(token,callback){
+exports.describeGlobal = function(token,endpoint,callback){
 	soap.createClient(partnerWSDL, function(err, client) {
       console.log(client.SforceService.Soap);
-    
+    	//sets new soap endpoint and session id
+        client.setEndpoint(endpoint);
+        var sheader = {SessionHeader:{sessionId: token}};
+        client.addSoapHeader(sheader,"","tns","");
+
         client.describeGlobal(function(err,result,raw){          
           if(err){
             return callback(err);

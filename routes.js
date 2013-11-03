@@ -342,11 +342,12 @@ exports.sfCanvasStatus = function(req,res){
 
 exports.sfDescribeGlobal = function(req,res){
 	var token = sftools.getCanvasDetails(req);
-	if(!token || !token.context || !token.context.oauthToken){
+	if(!token || !token.client || !token.client.oauthToken){
 		res.statusCode = 400;
 		return res.send({error:'No canvas details'});
 	}
-	sftools.describeGlobal(token.context.oauthToken, function(err,result){
+	var endpoint = token.context.links.partnerUrl;
+	sftools.describeGlobal(token.context.oauthToken,endpoint, function(err,result){
 		if(err){
 			res.statusCode = 400;
 			return res.send({error: err});
