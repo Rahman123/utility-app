@@ -37,9 +37,7 @@ app.configure(function() {
     
 });
 
-app.get('/',function(req,res){
-    res.render('index',{});
-});
+app.get('/',routes.mainRoot);
 
 
 app.post('/api/base64/encode', routes.base64Encode);
@@ -74,6 +72,8 @@ app.trace('/api/requestToBin/:id', routes.requestToBin);
 
 /* SF Tools */
 app.post('/sf/canvas/callback', routes.sfCanvasCallback);
+app.get('/api/sf/canvas/details', routes.sfCanvasStatus);
+
 
 exports.server = app.listen(PORT, function() {
     console.log("Listening on " + PORT);

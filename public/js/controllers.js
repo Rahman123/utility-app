@@ -28,6 +28,16 @@ angmodule.controller("MenuCtrl",
             return false;
         }
 
+        //tells if we are in the canvas app context
+        $scope.sfCanvasDetails = null;
+        APIProxy.getSFCanvasDetails(function(details){
+            $scope.sfCanvasDetails = details;
+        },
+        function(err){
+            $scope.sfCanvasDetails = null;
+            console.log(err);
+        });
+
     }
 );
 
@@ -327,6 +337,13 @@ angmodule.controller('RequestBinCtrl',
         $scope.init();
 
 });
+
+angmodule.controller("SFToolsCtrl",
+    function($scope, $http, $filter, $location, AppUtils, APIProxy){
+        console.log('SFToolsCtrl');
+
+    }
+);
 
 function handleError(msg){
     alert(msg);

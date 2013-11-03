@@ -314,18 +314,28 @@ exports.requestToBin = function(req,res){
 	
 }
 
+/* this is the main root of the site */
+exports.mainRoot = function(req,res){
+    res.render('index');
+};
+
+
 /*
 	Handles the POST request made by the Canvas App (Salesforce)
 */
 exports.sfCanvasCallback = function(req,res){
-	
+
 	sftools.canvasCallback(req.body, C.SF.clientSecret, function(error, canvasRequest){
 		if(error){
 			res.statusCode = 400;
 			return res.send({error: error});
 		}
 		sftools.saveCanvasDetailsInSession(req,canvasRequest);
-		console.log(sftools.getCanvasDetails(req));
 		return res.redirect('/');
 	});
+}
+
+/* returns the cavans details if any */
+exports.sfCanvasStatus = function(req,res){
+	res.send(sftools.getCanvasDetails(req));
 }

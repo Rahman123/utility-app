@@ -223,5 +223,18 @@ angmodule.factory('APIProxy', ['$http', function ($http) {
 			  	callbackError(err);
 			  });
 		},
+
+		/* gets the SF canvas details (if any) */
+		getSFCanvasDetails : function(callbackSuccess, callbackError){
+			$http.get('/api/sf/canvas/details')
+			.success(function(data, status, headers, config) {
+			  	if(status !== 200) callbackError(data);
+				else callbackSuccess(data);
+			  })
+			  .error(function(err) {
+			  	callbackError(err);
+			  });
+		},
+		
 	};
 }]);

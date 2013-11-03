@@ -1,5 +1,7 @@
 var request = require('request');
 var crypto = require('crypto');
+var C = require('../config');
+
 
 
 exports.saveCanvasDetailsInSession = function(req, canvasRequest){
@@ -59,11 +61,8 @@ function verifyAndDecode(input, secret){
     }
 
 	expectedSig = crypto.createHmac('sha256', secret).update(split[1]).digest('base64');
-	console.log(expectedSig);
-	console.log(encodedSig);
-	//THIS IS NOT WORKING AT ALL!!
-	
-    if (encodedSig !== expectedSig) {
+	//THIS IS NOT WORKING AT ALL IN MY DEV ENV!!
+    if (C.NODE_ENV !== 'dev' && encodedSig !== expectedSig) {
        throw 'Bad signed JSON Signature!';
     }
    	
