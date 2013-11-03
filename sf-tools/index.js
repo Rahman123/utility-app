@@ -2,6 +2,8 @@ var request = require('request');
 var crypto = require('crypto');
 var C = require('../config');
 
+var partnerWSDL = './sf-partner.wsdl';
+var metadataWSDL = './sf-metadata.wsdl';
 
 
 exports.saveCanvasDetailsInSession = function(req, canvasRequest){
@@ -70,3 +72,20 @@ function verifyAndDecode(input, secret){
 	return canvasRequest;
 
 }
+
+/* SObject  global describe */
+exports.describeGlobal = function(token,callback){
+	soap.createClient(partnerWSDL, function(err, client) {
+      console.log(client.SforceService.Soap);
+    
+        client.describeGlobal(function(err,result,raw){          
+          if(err){
+            callback(err);
+          }
+          if(!err && result){
+            callback(null, result);//JSON.stringify(result,undefined,2));
+          }
+        });
+      }
+  });
+};

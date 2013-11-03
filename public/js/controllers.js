@@ -13,7 +13,7 @@ angmodule.controller("GlobalCtrl",
 );
 
 angmodule.controller("MenuCtrl",
-    function($scope, $http, $filter, $location, AppUtils, APIProxy){
+    function($scope, $http, $filter, $location, AppUtils, SFProxy){
         console.log('MenuCtrl');
 
         $scope.isActiveTab   = function(tabNameURL) {
@@ -30,7 +30,7 @@ angmodule.controller("MenuCtrl",
 
         //tells if we are in the canvas app context
         $scope.sfCanvasDetails = null;
-        APIProxy.getSFCanvasDetails(function(details){
+        SFProxy.getSFCanvasDetails(function(details){
             console.log(details);
             if(details.context)
                 $scope.sfCanvasDetails = details;
@@ -343,8 +343,23 @@ angmodule.controller('RequestBinCtrl',
 });
 
 angmodule.controller("SFToolsCtrl",
-    function($scope, $http, $filter, $location, AppUtils, APIProxy){
+    function($scope, $http, $filter, $location, AppUtils, SFProxy){
         console.log('SFToolsCtrl');
+
+        $scope.globalDescribe = null;
+        $scope.errorMsg = null;
+
+        SFProxy.describeGlobal(function(result){
+            $scope.errorMsg = null;
+
+            console.log(result);
+            $scope.globalDescribe = result;
+        },
+        function(err){
+            console.log(err);
+            $scope.errorMsg = (err.error)?err.error:JSON.stringify(err);
+            $scope.globalDescribe = null;
+        });
 
     }
 );

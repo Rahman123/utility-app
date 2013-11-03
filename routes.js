@@ -333,9 +333,24 @@ exports.sfCanvasCallback = function(req,res){
 		sftools.saveCanvasDetailsInSession(req,canvasRequest);
 		return res.redirect('/');
 	});
-}
+};
 
 /* returns the cavans details if any */
 exports.sfCanvasStatus = function(req,res){
 	res.send(sftools.getCanvasDetails(req));
-}
+};
+
+exports.sfDescribeGlobal = function(req,res){
+	var token = sftools.getCanvasDetails(req);
+	if(!token || !token.context || !token.context.oauthToken){
+		res.statusCode = 400;
+		return res.send({error:'No canvas details'});
+	}
+	sftools.describeGlobal(token.context.oauthToken, function(err,result){
+		if(err){
+			res.statusCode = 400;
+			return res.send({error: err});
+		}
+		return res.send(result);
+	});
+};

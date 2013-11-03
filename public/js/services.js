@@ -224,6 +224,14 @@ angmodule.factory('APIProxy', ['$http', function ($http) {
 			  });
 		},
 
+		
+
+
+	};
+}]);
+
+angmodule.factory('SFProxy', ['$http', function ($http) {
+	return {
 		/* gets the SF canvas details (if any) */
 		getSFCanvasDetails : function(callbackSuccess, callbackError){
 			$http.get('/api/sf/canvas/details')
@@ -235,6 +243,16 @@ angmodule.factory('APIProxy', ['$http', function ($http) {
 			  	callbackError(err);
 			  });
 		},
-		
-	};
+		/* describe global */
+		describeGlobal : function(callbackSuccess, callbackError){
+			$http.get('/api/sf/describeGlobal')
+			.success(function(data, status, headers, config) {
+			  	if(status !== 200) callbackError(data);
+				else callbackSuccess(data);
+			  })
+			  .error(function(err) {
+			  	callbackError(err);
+			  });
+		},
+	}
 }]);
