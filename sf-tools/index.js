@@ -3,8 +3,8 @@ var crypto = require('crypto');
 var soap = require('soap');
 var C = require('../config');
 
-var partnerWSDL = './sf-partner.wsdl';
-var metadataWSDL = './sf-metadata.wsdl';
+var partnerWSDL = 'sf-partner.wsdl';
+var metadataWSDL = 'sf-metadata.wsdl';
 
 
 exports.saveCanvasDetailsInSession = function(req, canvasRequest){
@@ -77,7 +77,6 @@ function verifyAndDecode(input, secret){
 /* SObject  global describe */
 exports.describeGlobal = function(token,endpoint,callback){
 	soap.createClient(partnerWSDL, function(err, client) {
-      console.log(client.SforceService.Soap);
     	//sets new soap endpoint and session id
         client.setEndpoint(endpoint);
         var sheader = {SessionHeader:{sessionId: token}};
