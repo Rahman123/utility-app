@@ -77,6 +77,9 @@ function verifyAndDecode(input, secret){
 /* SObject  global describe */
 exports.describeGlobal = function(token,endpoint,callback){
 	soap.createClient(partnerWSDL, function(err, client) {
+		if(err){
+			return callback(err);
+		}
     	//sets new soap endpoint and session id
         client.setEndpoint(endpoint);
         var sheader = {SessionHeader:{sessionId: token}};
