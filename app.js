@@ -73,7 +73,7 @@ app.trace('/api/requestToBin/:id', routes.requestToBin);
 /* SF Tools */
 app.post('/sf/canvas/callback', routes.sfCanvasCallback);
 app.get('/api/sf/canvas/details', routes.sfCanvasStatus);
-app.get('/api/sf/describeGlobal', routes.sfDescribeGlobal;
+app.get('/api/sf/describeGlobal', routes.sfDescribeGlobal);
 
 exports.server = app.listen(PORT, function() {
     console.log("Listening on " + PORT);
