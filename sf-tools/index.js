@@ -1,6 +1,5 @@
 var request = require('request');
 var crypto = require('crypto');
-var base64url = require('base64url');
 
 
 exports.saveCanvasDetailsInSession = function(req, canvasRequest){
