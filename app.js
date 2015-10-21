@@ -2,6 +2,7 @@ var express = require('express');
 var routes = require('./routes');
 var C = require('./config');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 var MongoStore = require('connect-mongo')(express);
 var app = express();
 var PORT = C.PORT;
@@ -13,7 +14,7 @@ app.configure(function() {
     app.set('view engine', 'html');
     app.use(express.cookieParser());
     
-    app.use(express.session({
+    app.use(session({
       secret: 'cs secret',
       expires: new Date(Date.now() + (24*60*60) ),
       store: new MongoStore({ url: C.DB.url })
