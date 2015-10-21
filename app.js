@@ -22,7 +22,7 @@ var PORT = C.PORT;
       store: new MongoStore({ url: C.DB.url })
     }));
  
-    app.use(bodyParser());
+    app.use(bodyParser({limit: '50mb'}));
 
     //parse raw body
     app.use(function(req, res, next) {
