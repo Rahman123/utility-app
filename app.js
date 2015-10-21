@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var cookieParser  = require("cookie-parser");
 var logger = require("express-logger");
-var MongoStore = require('connect-mongo')(express);
+var MongoStore = require('connect-mongo')(session);
 var app = express();
 var PORT = C.PORT;
 
