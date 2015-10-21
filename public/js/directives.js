@@ -123,6 +123,38 @@ angmodule.directive('jsonTree', function($compile) {
     };
   });
 
+
+/*
+  In the ngFile variable scope you will have:
+    - body: (content of the file)
+    - filename: file name
+*/
+angmodule.directive("ngFile", [function () {
+    return {
+        scope: {
+            ngFile: "="
+        },
+        link: function (scope, element, attributes) {
+            element.bind("change", function (changeEvent) {
+                if(!scope.ngFile) scope.ngFile = {};
+                if(!changeEvent || !changeEvent.target || !changeEvent.target.files || !changeEvent.target.files.length) {
+                  scope.ngFile = {};
+                  return;
+                }
+                var reader = new FileReader();
+                reader.onload = function (loadEvent) {
+                    scope.$apply(function () {
+                        scope.ngFile.body = loadEvent.target.result;
+                    });
+                }
+                reader.readAsText(changeEvent.target.files[0]);
+                scope.ngFile.filename = changeEvent.target.files[0].name;
+
+            });
+        }
+    }
+}]);
+
 function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }

@@ -355,3 +355,16 @@ exports.sfDescribeGlobal = function(req,res){
 		return res.send(result);
 	});
 };
+
+/*
+	returns the compare of 2 SObjects
+*/
+exports.compareSObjectsMetadata = function(req,res){
+	sftools.compareSObjectsMetadata(req.body.source, req.body.destination,function(err,result){
+		if(err){
+			res.statusCode = 400;
+			return res.send({error: err});
+		}
+		return res.send(result);
+	});
+};

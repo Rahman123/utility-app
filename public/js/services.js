@@ -224,9 +224,6 @@ angmodule.factory('APIProxy', ['$http', function ($http) {
 			  });
 		},
 
-		
-
-
 	};
 }]);
 
@@ -246,6 +243,20 @@ angmodule.factory('SFProxy', ['$http', function ($http) {
 		/* describe global */
 		describeGlobal : function(callbackSuccess, callbackError){
 			$http.get('/api/sf/describeGlobal')
+			.success(function(data, status, headers, config) {
+			  	if(status !== 200) callbackError(data);
+				else callbackSuccess(data);
+			  })
+			  .error(function(err) {
+			  	callbackError(err);
+			  });
+		},
+
+		/* compare 2 SObjects */
+		compareSObjectsMetadata : function(source, destination, callbackSuccess, callbackError){
+			source = source || null;
+			destination = destination || null;
+			$http.post('/api/sf/compareSObjectsMetadata',{source: source, destination: destination})
 			.success(function(data, status, headers, config) {
 			  	if(status !== 200) callbackError(data);
 				else callbackSuccess(data);

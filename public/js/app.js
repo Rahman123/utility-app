@@ -59,6 +59,10 @@ angmodule.config(['$routeProvider', function ($routeProvider) {
 			templateUrl: '/public/partials/sf-tools.partial.html',
 			controller: 'SFToolsCtrl'
 		})
+		.when('/sf-tools-compobj', {
+			templateUrl: '/public/partials/sf-tools-compobj.partial.html',
+			controller: 'SFToolsCompareObjectsCtrl'
+		})
 		/*
 		.when('/job/:id', {
 			templateUrl: 'partials/job-detail.partial.html',

@@ -19,3 +19,5 @@
 	Unsetting GITHUB_USERNAME and restarting myapp... done, v13
 
 http://utility-app.herokuapp.com/
+
+## Run a MongoDB instance if deployed locally (if no port is locked, you can use a remote MongoDB instance as well)

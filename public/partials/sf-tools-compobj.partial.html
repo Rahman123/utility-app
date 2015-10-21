@@ -1,0 +1,112 @@
+<h1>Compare SObjects</h1>
+
+<center class="well well-small" >
+	<div class="row">
+		<div class="col-md-3">
+			<b>Source File</b>
+			<br/>
+			<input id="srcFile" type="file" ng-file="source" style="display:none;"/>
+			<button class="btn btn-block btn-success" onclick="$('#srcFile').click()">Select source...</button>
+			<br/>
+			<label class="label label-info">{{source.filename}}</label>
+			<br/>
+			<span ng-show="source.body"> {{(source.body.length / 1024).toFixed(2)}} kB</span>
+		</div>
+		<div class="col-md-3">
+			<b>Origin File</b>
+			<br/>
+			<input id="destFile" type="file" ng-file="destination" style="display:none;"/>
+			<button class="btn btn-block btn-success" onclick="$('#destFile').click()">Select destination...</button>
+			<br/>
+			<label class="label label-info">{{destination.filename}}</label>
+			<br/>
+			<span ng-show="destination.body"> {{ (destination.body.length / 1024).toFixed(2)}} kB</span>
+		</div>
+		<div class="col-md-2">
+			<br/>
+			<button class="btn btn-warning btn-block btn-lg" ng-click="compareFiles()">Compare...</button>
+		</div>
+		<div class="col-md-1">
+			<input type="checkbox" ng-model="setting.showOnlyDiffs"/><label>Show only diffs</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-9">
+			<div class="alert alert-danger" ng-show="errorMsg"><strong>Error</strong>: {{errorMsg}}</div>
+		</div>
+	</div>
+	
+</center>
+
+
+<h3>Fields</h3>
+<a  ng-click="expand(compareResult.fields,true)">Expand all</a>
+<a  ng-click="expand(compareResult.fields,false)">Collapse all</a>
+<hr/>
+<div style="overflow:auto; height: 500px">
+	<table class="table table-hover table-condensed" style="width:80%;">
+		<thead>
+			<tr>
+				<th>Has Diffs</th>
+				<th colspan="2">API Name</th>
+				<th>Source</th>
+				<th>Destination</th>
+			</tr>
+		</thead>
+		<tbody ng-init="compareResult.fields[fieldName].diff = isDiffField(compareResult.fields[fieldName])"
+				ng-repeat="fieldName in getApiNames(compareResult.fields)" 
+				ng-show="!setting.showOnlyDiffs || compareResult.fields[fieldName].diff" >
+			<!-- main field -->
+			<tr ng-class="{danger:compareResult.fields[fieldName].diff}">
+				<td>
+					<label class="glyphicon glyphicon-plus-sign" 
+							ng-click="compareResult.fields[fieldName].shown = true"
+							ng-show="!compareResult.fields[fieldName].shown"/>
+					<label class="glyphicon glyphicon-minus-sign"
+							ng-click="compareResult.fields[fieldName].shown = false"
+							ng-show="compareResult.fields[fieldName].shown"/>
+				</td>
+				<td colspan="2">
+					<label>{{fieldName}}</label>
+				</td>
+				<td class="active" style="text-align:center;">
+					<span  ng-show="compareResult.fields[fieldName].found=='source' || compareResult.fields[fieldName].found=='both'" class="glyphicon glyphicon-ok"></span>
+				</td>
+				<td style="text-align:center;">
+					<span  ng-show="compareResult.fields[fieldName].found=='destination' || compareResult.fields[fieldName].found=='both'" class="glyphicon glyphicon-ok"></span>
+				</td>
+				
+			</tr>
+
+			<!-- attributes not picklist -->
+			<tr ng-init="attr = compareResult.fields[fieldName][attrName]" 
+				ng-repeat="attrName in getApiNames(compareResult.fields[fieldName])"
+				ng-show="compareResult.fields[fieldName].shown && (!setting.showOnlyDiffs || attr.diff) && attrName != 'picklist'">
+				<td></td>
+				<td>
+					<span  ng-show="attr.diff">
+						<label class="label label-warning">&raquo;</label>
+					</span>
+				</td>
+				<td>
+					{{attrName}}
+				</td>
+				<td class="active" style="text-align:center;">
+					{{showLess(attr.source)}}
+				</td>
+				<td style="text-align:center;">
+					{{showLess(attr.dest)}}
+				</td>
+				
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!--
+<pre style="overflow:auto; height:350px">{{compareResult}}</pre>
+
+
+<div class="well well-small" style="overflow:auto; height:350px">
+	<data-json-tree ng-model="compareResult"></data-json-tree>
+</div>
+-->

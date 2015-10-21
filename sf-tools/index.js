@@ -3,6 +3,8 @@ var crypto = require('crypto');
 var soap = require('soap');
 var C = require('../config');
 
+var compareTools = require('./metadataCompareTools');
+
 var partnerWSDL = './sf-tools/sf-partner.wsdl';
 var metadataWSDL = './sf-tools/sf-metadata.wsdl';
 
@@ -95,3 +97,30 @@ exports.describeGlobal = function(token,endpoint,callback){
         });
       });
 };
+
+/*
+    Compares 2 SObjects
+    @source : {body: string, filename: string}
+    @destination : {body: string, filename: string}
+    @callback : function(error,result)
+*/
+exports.compareSObjectsMetadata = function(source, destination, callback){
+    if(!source || !source.body || !source.filename){
+        return callback('Missing source file name or body');
+    }
+     if(!destination || !destination.body || !destination.filename){
+        return callback('Missing source file name or body');
+    }
+    
+    compareTools.compareSObjects(source,destination,function(err,result){
+        if(err) return callback(err);
+        return callback(null,result);
+    });
+    
+    /*
+    return callback(null,{result:'compared!', 
+                            source: {name: source.filename, dataSize: source.body.length},
+                            destination: {name: destination.filename, dataSize: destination.body.length},
+                        });
+    */
+}

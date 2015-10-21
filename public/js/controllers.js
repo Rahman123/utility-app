@@ -364,6 +364,76 @@ angmodule.controller("SFToolsCtrl",
     }
 );
 
+angmodule.controller("SFToolsCompareObjectsCtrl",
+    function($scope, $http, $filter, $location, AppUtils, APIProxy, SFProxy){
+        console.log('SFToolsCompareObjectsCtrl');
+        $scope.errMsg = null;
+        $scope.source = {};
+        $scope.destination = {};
+
+        $scope.settings ={
+            showOnlyDiffs : false,
+        }
+
+        $scope.$emit(AppUtils.Const.Events.LOCATION_CHANGE,{});
+
+        $scope.compareFiles = function(){
+            if(!$scope.source.body || !$scope.destination.body){
+                $scope.errorMsg = 'Source or destination not loaded.';
+                return;
+            }
+
+            SFProxy.compareSObjectsMetadata($scope.source, $scope.destination, function(result) {
+                $scope.errorMsg = null;
+                console.log(result);
+                $scope.compareResult = result;
+                return;
+            },
+            function(err){
+                console.log(err);
+                $scope.errorMsg = (err.error)?err.error:JSON.stringify(err);
+                $scope.compareResult = null;
+                return;
+            });
+        }
+
+        /* get the api names from the fields list*/
+        $scope.getApiNames = function(fieldsList){
+            var result = [];
+            if(!fieldsList) return result;
+            for(var name in fieldsList) {
+                result.push(name);
+            }
+            return result;
+        }
+
+        /* checks if source and destination field differs */
+        $scope.isDiffField = function(field){
+            if(field.found !== 'both') return true;
+            var isDiff = false;
+            for(var name in field){
+                isDiff |= field[name].diff;
+            }
+            return isDiff;
+        }
+
+        $scope.showLess = function(value){
+            if(!value) return value;
+            if(value.length > 50) value = value.substring(0,47) +'...';
+            return value;
+        }
+
+        $scope.expand = function(listOfElems,status) {
+            if(!listOfElems) return;
+            for(var name in listOfElems) {
+                listOfElems[name].shown = status;
+            }
+        }
+        
+    }
+);
+
+
 function handleError(msg){
     alert(msg);
 }

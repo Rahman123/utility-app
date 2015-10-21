@@ -74,6 +74,7 @@ app.trace('/api/requestToBin/:id', routes.requestToBin);
 app.post('/sf/canvas/callback', routes.sfCanvasCallback);
 app.get('/api/sf/canvas/details', routes.sfCanvasStatus);
 app.get('/api/sf/describeGlobal', routes.sfDescribeGlobal);
+app.post('/api/sf/compareSObjectsMetadata', routes.compareSObjectsMetadata);
 
 exports.server = app.listen(PORT, function() {
     console.log("Listening on " + PORT);
@@ -84,7 +85,8 @@ exports.server = app.listen(PORT, function() {
 //http://stackoverflow.com/questions/13186134/node-js-express-and-heroku-how-to-handle-http-and-https
 //creating certificates http://blog.nategood.com/client-side-certificate-authentication-in-ngi
 
-if(C.NODE_ENV==='dev'){
+
+if(C.NODE_ENV==='devSSL'){
     console.log(C.NODE_ENV);
     var fs = require('fs');
     var https = require('https');
