@@ -9,7 +9,7 @@ var MongoStore = require('connect-mongo')(session);
 var app = express();
 var PORT = C.PORT;
 
-app.configure(function() {
+//app.configure(function() {
     app.use('/public',express.static(__dirname + '/public'));
     app.engine('html', require('ejs').renderFile);
     app.set('views', __dirname + '/views');
@@ -39,7 +39,7 @@ app.configure(function() {
     });
     app.use(logger());
     
-});
+//});
 
 app.get('/',routes.mainRoot);
 
