@@ -3,6 +3,8 @@ var routes = require('./routes');
 var C = require('./config');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var cookieParser  = require("cookie-parser");
+var logger = require("express-logger");
 var MongoStore = require('connect-mongo')(express);
 var app = express();
 var PORT = C.PORT;
@@ -12,7 +14,7 @@ app.configure(function() {
     app.engine('html', require('ejs').renderFile);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'html');
-    app.use(express.cookieParser());
+    app.use(cookieParser());
     
     app.use(session({
       secret: 'cs secret',
@@ -35,7 +37,7 @@ app.configure(function() {
         });
         next();
     });
-    app.use(express.logger());
+    app.use(logger());
     
 });
 
