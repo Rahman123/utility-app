@@ -1,6 +1,7 @@
 var express = require('express');
 var routes = require('./routes');
 var C = require('./config');
+var bodyParser = require('body-parser');
 var MongoStore = require('connect-mongo')(express);
 var app = express();
 var PORT = C.PORT;
@@ -18,7 +19,7 @@ app.configure(function() {
       store: new MongoStore({ url: C.DB.url })
     }));
  
-    app.use(express.bodyParser());
+    app.use(bodyParser());
 
     //parse raw body
     app.use(function(req, res, next) {

@@ -10,7 +10,8 @@
         "mongoose": "4.0",
         "moment": "2.3.x",
         "soap":"0.3.x",
-        "xml2js":"*"
+        "xml2js":"*",
+        "body-parser":"*"
     },
     "engines": {
         "node": "0.10.x",
