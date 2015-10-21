@@ -6,7 +6,7 @@
         "ejs": "*",
         "request":"2.27.x",
         "random-string":"0.1.x",
-        "connect-mongo":"0.8.x",
+        "connect-mongo":"*",
         "mongoose": "4.0",
         "moment": "2.3.x",
         "soap":"0.3.x",
@@ -17,7 +17,7 @@
         "express-logger":"*"
     },
     "engines": {
-        "node": "0.10.x",
+        "node": "0.12.x",
         "npm": "1.2.x"
     }
 }
