@@ -6,7 +6,6 @@
         "ejs": "*",
         "request":"2.27.x",
         "random-string":"0.1.x",
-        "connect-mongo":"2.*",
         "mongoose": "4.10.*",
         "moment": "2.3.x",
         "soap":"0.3.x",
@@ -14,7 +13,8 @@
         "body-parser":"*",
         "express-session":"*",
         "cookie-parser":"*",
-        "express-logger":"*"
+        "express-logger":"*",
+        "connect-mongodb-session":"*"
     },
     "engines": {
         "node": "0.12.x",

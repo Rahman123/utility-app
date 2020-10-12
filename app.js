@@ -5,7 +5,8 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var cookieParser  = require("cookie-parser");
 //var logger = require("express-logger");
-var MongoStore = require('connect-mongo')(session);
+//var MongoStore = require('connect-mongo')(session);
+var MongoDBStore = require('connect-mongodb-session')(session);
 var app = express();
 var PORT = C.PORT;
 
@@ -19,7 +20,7 @@ var PORT = C.PORT;
     app.use(session({
       secret: 'cs secret',
       expires: new Date(Date.now() + (24*60*60) ),
-      store: new MongoStore({ url: C.DB.url })
+      store: new MongoStore({ uri: C.DB.url , collection: "mySessions"})
     }));
  
     app.use(bodyParser({limit: '50mb'}));
