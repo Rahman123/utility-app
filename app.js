@@ -7,7 +7,7 @@ var session = require('express-session');
 var cookieParser  = require("cookie-parser");
 //var logger = require("express-logger");
 //var MongoStore = require('connect-mongo')(session);
-var MongoDBStore = require('connect-mongodb-session')(session);
+var MongoStore = require('connect-mongodb-session')(session);
 var app = express();
 var PORT = C.PORT;
 
