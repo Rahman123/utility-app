@@ -6,7 +6,7 @@
         "ejs": "*",
         "request":"2.27.x",
         "random-string":"0.1.x",
-        "mongoose": "4.10.*",
+        "mongoose": "5.10.*",
         "moment": "2.3.x",
         "soap":"0.3.x",
         "xml2js":"*",
