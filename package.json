@@ -4,7 +4,7 @@
     "dependencies": {
         "express": "4.x",
         "ejs": "*",
-        "request":"2.27.x",
+        "request":"2.88.x",
         "random-string":"0.1.x",
         "mongoose": "4.10.*",
         "moment": "2.3.x",
