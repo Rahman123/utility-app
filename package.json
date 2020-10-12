@@ -6,7 +6,7 @@
         "ejs": "*",
         "request":"2.27.x",
         "random-string":"0.1.x",
-        "connect-mongo":"*",
+        "connect-mongo":"2.*",
         "mongoose": "4.10.*",
         "moment": "2.3.x",
         "soap":"0.3.x",
