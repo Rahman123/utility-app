@@ -21,3 +21,6 @@
 http://utility-app.herokuapp.com/
 
 ## Run a MongoDB instance if deployed locally (if no port is locked, you can use a remote MongoDB instance as well)
+
+Mongo DB is on Atlas MongoDB mongodb.net
+https://cloud.mongodb.com/v2/5f84c753268d972bc588a697#security/database/users
